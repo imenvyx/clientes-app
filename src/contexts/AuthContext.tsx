@@ -7,8 +7,8 @@ import React, {
 } from 'react';
 
 type UserData = {
-  userName: string;
-  userId: string;
+  username: string;
+  userid: string;
   token: string;
   expiration: string;
 };
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const parsedData = JSON.parse(storedData) as UserData;
         setUserData(parsedData);
       } catch (error) {
-        console.error('Error parsing auth data:', error);
+        throw new Error('Error parsing auth data:');
         logout();
       }
     }

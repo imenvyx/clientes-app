@@ -1,6 +1,6 @@
 // src/pages/Login.tsx
 import React, { useState, useEffect } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, useLocation } from 'react-router-dom';
 import {
   Box,
   TextField,
@@ -18,13 +18,14 @@ import { useTranslation } from 'react-i18next';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
 interface IFormInputs {
-  userName: string;
+  username: string;
   password: string;
 }
 
 const Login = () => {
   const { login: loginIn } = useAuth();
   const history = useHistory();
+  const location = useLocation();
   const { t } = useTranslation();
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -37,40 +38,42 @@ const Login = () => {
     clearErrors,
   } = useForm({
     defaultValues: {
-      userName: '',
+      username: '',
       password: '',
     },
     mode: 'onSubmit',
   });
 
+  const { from } = (location.state as { from?: { pathname: string } }) || {
+    from: { pathname: '/' },
+  };
+
   useEffect(() => {
     const savedUsername = localStorage.getItem('savedUsername');
     if (savedUsername) {
-      setValue('userName', savedUsername);
+      setValue('username', savedUsername);
     }
   }, [setValue]);
 
   const onSubmit: SubmitHandler<IFormInputs> = async ({
-    userName,
+    username,
     password,
   }) => {
     clearErrors();
     try {
-      const response = await login(userName, password);
+      const response = await login(username, password);
 
       // Guardar token y datos de usuario
       localStorage.setItem('token', response.data.token);
       if (rememberMe) {
-        localStorage.setItem('savedUsername', userName);
+        localStorage.setItem('savedUsername', username);
       } else {
         localStorage.removeItem('savedUsername');
       }
 
       // Actualizar contexto de autenticación
       loginIn(response.data);
-
-      // Redirigir al home usando history.push
-      history.push('/');
+      history.replace(from || '/');
     } catch (error: any) {
       setError('root', {
         type: 'manual',
@@ -99,7 +102,7 @@ const Login = () => {
         <Box sx={{ width: '100%' }}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Controller
-              name="userName"
+              name="username"
               control={control}
               render={({ field }) => (
                 <TextField

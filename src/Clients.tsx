@@ -19,22 +19,20 @@ const Clients = () => {
   const queryClient = new QueryClient(QueryClientConfig);
 
   return (
-    <>
+    <div className="App">
       <CssBaseline />
       <ThemeProvider theme={clientsTheme}>
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
             <I18nextProvider i18n={i18n}>
               <Suspense fallback={<CircularProgress size={15} />}>
-                <RouterConfig>
-                  <div className="App"></div>
-                </RouterConfig>
+                <RouterConfig></RouterConfig>
               </Suspense>
             </I18nextProvider>
           </AuthProvider>
         </QueryClientProvider>
       </ThemeProvider>
-    </>
+    </div>
   );
 };
 

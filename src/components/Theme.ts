@@ -5,26 +5,26 @@ const clientsTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#2A3F54', // Azul oscuro corporativo
-      contrastText: '#FFFFFF',
+      main: '#3F51B5',
+      contrastText: '##FFFFFF',
     },
     secondary: {
-      main: '#337AB7', // Azul medio profesional
-      contrastText: '#FFFFFF',
+      main: '##F5F5F5',
+      contrastText: '#5A738E',
     },
     error: {
       main: '#D9534F', // Rojo para acciones críticas
     },
     background: {
-      default: '#F5F5F5', // Fondo gris claro
+      default: '##C5CAE9', // Fondo gris claro
       paper: '#FFFFFF', // Fondo de tarjetas/bloques
     },
     text: {
-      primary: '#2A3F54', // Texto principal oscuro
-      secondary: '#5A738E', // Texto secundario
+      primary: '#212121', // Texto principal oscuro
+      secondary: '##757575', // Texto secundario
     },
     action: {
-      hover: '#EBF5FB', // Hover suave
+      hover: '##FF9800', // Hover suave
     },
   },
   typography: {
@@ -51,22 +51,22 @@ const clientsTheme = createTheme({
     },
   },
   components: {
-    MuiAppBar: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#2A3F54',
-          boxShadow: 'none',
-        },
-      },
-    },
-    MuiDrawer: {
-      styleOverrides: {
-        paper: {
-          backgroundColor: '#2A3F54',
-          color: '#FFFFFF',
-        },
-      },
-    },
+    // MuiAppBar: {
+    //   styleOverrides: {
+    //     root: {
+    //       backgroundColor: '#2A3F54',
+    //       boxShadow: 'none',
+    //     },
+    //   },
+    // },
+    // MuiDrawer: {
+    //   styleOverrides: {
+    //     paper: {
+    //       backgroundColor: '#2A3F54',
+    //       color: '#FFFFFF',
+    //     },
+    //   },
+    // },
     MuiButton: {
       variants: [
         {

@@ -12,6 +12,8 @@ import { useAuth } from '../contexts/AuthContext';
 // Pages
 import Login from 'pages/Login/Login';
 import Register from 'pages/Register/Register';
+import DashboardLayout from 'layouts/DashboardLayout';
+import { Home } from 'pages/Home/Home';
 // import Home from '../pages/Home';
 // import ClientList from '../pages/ClientList';
 // import ClientForm from '../pages/ClientForm';
@@ -19,13 +21,13 @@ import Register from 'pages/Register/Register';
 
 // Componente para rutas privadas
 const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
-  const { userData } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   return (
     <Route
       {...rest}
       render={({ location }) =>
-        userData?.userId ? (
+        isAuthenticated ? (
           children
         ) : (
           <Redirect
@@ -46,7 +48,7 @@ const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
  *
  * @returns  The routing configuration for the application.
  */
-const RouterConfig: React.FC = () => {
+const RouterConfig = () => {
   return (
     <Router>
       <Switch>
@@ -56,9 +58,9 @@ const RouterConfig: React.FC = () => {
 
         {/* Rutas privadas */}
         <PrivateRoute exact path="/">
-          {/* <Home>
-            <ClientList />
-          </Home> */}
+          <DashboardLayout>
+            <Home />
+          </DashboardLayout>
         </PrivateRoute>
 
         <PrivateRoute exact path="/clientes">

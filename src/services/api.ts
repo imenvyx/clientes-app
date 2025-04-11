@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 // 1. Definir interfaces principales primero
 interface Client {
@@ -15,8 +15,8 @@ interface LoginPayload {
 export interface LoginSuccessResponse {
   token: string;
   expiration: string;
-  userId: string;
-  userName: string;
+  userid: string;
+  username: string;
 }
 
 // 3. Configuración de Axios
