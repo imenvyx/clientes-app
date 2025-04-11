@@ -1,0 +1,19 @@
+{
+  "welcome": "Bienvenido",
+  "buttons": {
+    "submit": "Enviar"
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "rememberMe": "Recuérdame",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "loginButton": "Iniciar sesión",
+    "register": "Registrarse",
+    "registerButton": "Registrarse",
+    "resetPassword": "Restablecer contraseña"
+  }
+}
+ 
