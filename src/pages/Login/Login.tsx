@@ -16,6 +16,8 @@ import { useAuth } from 'contexts/AuthContext';
 import { login } from 'services/api';
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { useMySnackbar } from 'contexts/MySnackbarProvider';
+import { useLocalStorage } from 'hooks/useLocalStorage';
 
 interface IFormInputs {
   username: string;
@@ -27,18 +29,17 @@ const Login = () => {
   const history = useHistory();
   const location = useLocation();
   const { t } = useTranslation();
-  const [rememberMe, setRememberMe] = useState(false);
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    setError,
-    clearErrors,
-  } = useForm({
+  const mySnackbar = useMySnackbar();
+  const [valueInLocalStorage, setValueInLocalStorage] = useLocalStorage(
+    `savedUsername`,
+    ''
+  );
+  const [rememberMe, setRememberMe] = useState(!!valueInLocalStorage);
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(valueInLocalStorage);
+  const { control, handleSubmit, clearErrors } = useForm({
     defaultValues: {
-      username: '',
+      username: rememberMe ? valueInLocalStorage : '',
       password: '',
     },
     mode: 'onSubmit',
@@ -48,37 +49,26 @@ const Login = () => {
     from: { pathname: '/' },
   };
 
-  useEffect(() => {
-    const savedUsername = localStorage.getItem('savedUsername');
-    if (savedUsername) {
-      setValue('username', savedUsername);
-    }
-  }, [setValue]);
-
   const onSubmit: SubmitHandler<IFormInputs> = async ({
     username,
     password,
   }) => {
     clearErrors();
     try {
+      setIsLoading(true);
       const response = await login(username, password);
 
-      // Guardar token y datos de usuario
-      localStorage.setItem('token', response.data.token);
       if (rememberMe) {
-        localStorage.setItem('savedUsername', username);
+        setValueInLocalStorage(username);
       } else {
-        localStorage.removeItem('savedUsername');
+        setValueInLocalStorage('');
       }
-
       // Actualizar contexto de autenticación
       loginIn(response.data);
       history.replace(from || '/');
     } catch (error: any) {
-      setError('root', {
-        type: 'manual',
-        message: error?.message,
-      });
+      mySnackbar.showWithMessage({ message: error.message, type: 'error' });
+      setIsLoading(false);
     }
   };
 
@@ -143,17 +133,12 @@ const Login = () => {
               }
               label={t('login.rememberMe')}
             />
-
-            {errors.root && (
-              <Typography color="error" variant="body2" mt={2}>
-                {errors.root.message}
-              </Typography>
-            )}
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
+              disabled={isLoading}
               sx={{ mt: 3, mb: 2 }}
             >
               {t('login.loginButton')}

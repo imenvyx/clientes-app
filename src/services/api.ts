@@ -50,7 +50,7 @@ export const login = async (
     );
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message);
+      throw new Error(error?.response?.data?.title);
     } else {
       throw new Error('Unknown error occurred');
     }

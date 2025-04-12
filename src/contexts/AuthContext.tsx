@@ -1,3 +1,4 @@
+import { useLocalStorage } from 'hooks/useLocalStorage';
 import React, {
   createContext,
   useContext,
@@ -24,35 +25,37 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [valueInLocalStorage, setValueInLocalStorage] = useLocalStorage(
+    'authData',
+    {}
+  );
+  const [userData, setUserData] = useState<UserData | null>(
+    () => valueInLocalStorage ?? null
+  );
   const [loading, setLoading] = useState(true);
+
+  const login = React.useCallback(
+    (data: UserData) => {
+      // Guardar en localStorage
+      setValueInLocalStorage(data);
+      setUserData(data);
+    },
+    [setValueInLocalStorage]
+  );
+
+  const logout = React.useCallback(() => {
+    // Limpiar almacenamiento local y estado
+    setValueInLocalStorage({});
+    setUserData(null);
+  }, [setValueInLocalStorage]);
 
   // Cargar datos de autenticación al iniciar
   useEffect(() => {
-    const storedData = localStorage.getItem('authData');
-    if (storedData) {
-      try {
-        const parsedData = JSON.parse(storedData) as UserData;
-        setUserData(parsedData);
-      } catch (error) {
-        throw new Error('Error parsing auth data:');
-        logout();
-      }
+    if (!userData) {
+      logout();
     }
     setLoading(false);
-  }, []);
-
-  const login = (data: UserData) => {
-    // Guardar en localStorage
-    localStorage.setItem('authData', JSON.stringify(data));
-    setUserData(data);
-  };
-
-  const logout = () => {
-    // Limpiar almacenamiento local y estado
-    localStorage.removeItem('authData');
-    setUserData(null);
-  };
+  }, [logout, userData]);
 
   const value = {
     userData,
