@@ -14,8 +14,7 @@ import Login from 'pages/Login/Login';
 import Register from 'pages/Register/Register';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { Home } from 'pages/Home/Home';
-// import Home from '../pages/Home';
-// import ClientList from '../pages/ClientList';
+import ClientList from 'pages/ClientList/ClientList';
 // import ClientForm from '../pages/ClientForm';
 // import Error404 from '../pages/Error404';
 
@@ -64,9 +63,9 @@ const RouterConfig = () => {
         </PrivateRoute>
 
         <PrivateRoute exact path="/clientes">
-          {/* <Home>
+          <DashboardLayout>
             <ClientList />
-          </Home> */}
+          </DashboardLayout>
         </PrivateRoute>
 
         <PrivateRoute exact path="/clientes/nuevo">

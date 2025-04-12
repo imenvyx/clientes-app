@@ -16,3 +16,21 @@ export interface LoginSuccessResponse {
   userid: string;
   username: string;
 }
+
+export interface PagedResults<T> {
+  pageNumber: number;
+  totalPages: number;
+  pageSize: number;
+  currentPageSize: number;
+  currentFirstIndex: number;
+  currentLastIndex: number;
+  totalCount: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
+  maxPageSize: number;
+  defaultPageSize: number;
+  sorts: string;
+  expands: string;
+  filters: string;
+  items: T[];
+}

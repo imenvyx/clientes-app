@@ -1,16 +1,16 @@
-import { Box, Toolbar, Typography } from '@mui/material';
+import { Toolbar, Typography } from '@mui/material';
+import { OutletContainer } from 'components/OutletContainer';
 import { useAuth } from 'contexts/AuthContext';
 
-export const Home = () => {
+/**
+ * Home component that displays a welcome message and user information.
+ *
+ * @returns The rendered Home component.
+ */
+export const Home = (): JSX.Element => {
   const { userData } = useAuth();
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        p: 3,
-        width: '100%',
-      }}
-    >
+    <OutletContainer>
       <Toolbar />
       <Typography
         variant="h4"
@@ -19,6 +19,6 @@ export const Home = () => {
       >
         Bienvenido {userData?.username}
       </Typography>
-    </Box>
+    </OutletContainer>
   );
 };

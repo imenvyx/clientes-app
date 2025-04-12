@@ -36,7 +36,7 @@ const Login = () => {
   );
   const [rememberMe, setRememberMe] = useState(!!valueInLocalStorage);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(valueInLocalStorage);
+
   const { control, handleSubmit, clearErrors } = useForm({
     defaultValues: {
       username: rememberMe ? valueInLocalStorage : '',

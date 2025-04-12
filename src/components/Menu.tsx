@@ -49,13 +49,13 @@ export const Menu = () => {
       </Toolbar>
       <Divider />
       <List>
-        <ListItemButton>
+        <ListItemButton href="/">
           <ListItemIcon sx={{ color: 'primary.main' }}>
             <HomeIcon />
           </ListItemIcon>
           <ListItemText primary="INICIO" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton href="/clientes">
           <ListItemIcon sx={{ color: 'primary.main' }}>
             <PeopleAltIcon />
           </ListItemIcon>
