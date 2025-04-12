@@ -1,23 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-
-// 1. Definir interfaces principales primero
-interface Client {
-  id: string;
-  nombre: string;
-  apellidos: string;
-}
-
-interface LoginPayload {
-  username: string;
-  password: string;
-}
-
-export interface LoginSuccessResponse {
-  token: string;
-  expiration: string;
-  userid: string;
-  username: string;
-}
+import { ClientCommon, LoginPayload, LoginSuccessResponse } from './types';
 
 // 3. Configuración de Axios
 const api = axios.create({
@@ -34,7 +16,9 @@ api.interceptors.request.use((config) => {
 });
 
 // 5. Funciones API con tipado mejorado
-export const fetchClients = async (): Promise<AxiosResponse<Client[]>> => {
+export const fetchClients = async (): Promise<
+  AxiosResponse<ClientCommon[]>
+> => {
   return api.get('api/Cliente/Listado');
 };
 
