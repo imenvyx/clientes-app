@@ -51,22 +51,6 @@ const clientsTheme = createTheme({
     },
   },
   components: {
-    // MuiAppBar: {
-    //   styleOverrides: {
-    //     root: {
-    //       backgroundColor: '#2A3F54',
-    //       boxShadow: 'none',
-    //     },
-    //   },
-    // },
-    // MuiDrawer: {
-    //   styleOverrides: {
-    //     paper: {
-    //       backgroundColor: '#2A3F54',
-    //       color: '#FFFFFF',
-    //     },
-    //   },
-    // },
     MuiButton: {
       variants: [
         {

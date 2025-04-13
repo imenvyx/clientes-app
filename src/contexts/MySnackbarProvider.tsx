@@ -1,3 +1,4 @@
+import React from 'react';
 import { NotificationMessage } from 'components/types';
 import { createContext, ReactNode, useContext } from 'react';
 

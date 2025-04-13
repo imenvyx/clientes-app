@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import React from 'react';
 import {
-  Button,
   IconButton,
   Snackbar,
   SnackbarCloseReason,
@@ -9,7 +12,7 @@ import {
 import { NotificationMessage } from './types';
 import useClasses from 'hooks/useClasses';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+
 import clsx from 'clsx';
 import InfoIcon from '@mui/icons-material/Info';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -83,8 +86,6 @@ export const MySnackbar = (props: SnackbarProps) => {
     onClose();
   };
 
-  const [openNotificationDialog, setOpenNotificationDialog] = useState(false);
-
   const getIcon = (type: NotificationMessage['type']) => {
     const iconProps = { className: clsx(classes.icon, classes[type]) };
     switch (type) {
@@ -102,7 +103,7 @@ export const MySnackbar = (props: SnackbarProps) => {
 
   const shouldTruncate =
     props.truncate?.length !== -1 &&
-    notification.message.length > (props.truncate?.length ?? 180);
+    notification?.message?.length > (props.truncate?.length ?? 180);
 
   return (
     <div>
@@ -128,18 +129,6 @@ export const MySnackbar = (props: SnackbarProps) => {
           </span>
         }
         action={[
-          <Button
-            key="more"
-            style={{ display: shouldTruncate ? 'inline-flex' : 'none' }}
-            className="info"
-            size="small"
-            onClick={(e) => {
-              setOpenNotificationDialog(true);
-              handleClose(e.nativeEvent, 'escapeKeyDown');
-            }}
-          >
-            {t('_pages:KSnackbar.seeMore')}
-          </Button>,
           <IconButton
             key="close"
             aria-label="close"

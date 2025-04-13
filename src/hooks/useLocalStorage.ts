@@ -7,14 +7,14 @@ import { useState, useEffect, Dispatch } from 'react';
  * @param initialValue item initial value
  * @returns state value and state setter
  */
-export const useLocalStorage = (
+export const useLocalStorage = <T>(
   key: string,
-  initialValue: unknown
-): [any, Dispatch<any>] => {
+  initialValue: T
+): [T, Dispatch<T>] => {
   const [value, setValue] = useState(() => {
     try {
       const localValue = window.localStorage.getItem(key);
-      return localValue ? JSON.parse(localValue) : initialValue;
+      return localValue ? (JSON.parse(localValue) as T) : initialValue;
     } catch (error) {
       return initialValue;
     }

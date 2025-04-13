@@ -1,8 +1,11 @@
+import React from 'react';
+import LogoutIcon from '@mui/icons-material/Logout';
 import {
   AppBar,
   Avatar,
   Box,
   IconButton,
+  Stack,
   Toolbar,
   Typography,
 } from '@mui/material';
@@ -13,9 +16,15 @@ import { useState } from 'react';
 export const Navbar = () => {
   const { userData } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { logout } = useAuth();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleLogout = () => {
+    // Implement logout functionality here
+    logout();
   };
 
   return (
@@ -48,7 +57,8 @@ export const Navbar = () => {
         >
           COMPAÑIA PRUEBA
         </Typography>
-        <Box
+        <Stack
+          direction={'row'}
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -57,11 +67,16 @@ export const Navbar = () => {
             justifyContent: 'flex-end',
           }}
         >
-          <Avatar sx={{ bgcolor: 'secondary.main' }}>
-            {userData?.username?.[0].toUpperCase()}
-          </Avatar>
           <Typography variant="body1">{userData?.username}</Typography>
-        </Box>
+          <IconButton
+            color="secondary"
+            aria-label="add to shopping cart"
+            size="large"
+            onClick={handleLogout}
+          >
+            <LogoutIcon fontSize="inherit" />
+          </IconButton>
+        </Stack>
       </Toolbar>
     </AppBar>
   );

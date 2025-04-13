@@ -11,6 +11,8 @@ import { I18nextProvider } from 'react-i18next';
 import { MySnackbar } from 'components/Snackbar';
 import { NotificationMessage } from 'components/types';
 import { MySnackbarProvider } from 'contexts/MySnackbarProvider';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 /**
  * The `Clientes` component is a functional React component that renders
@@ -29,28 +31,30 @@ const Clients = () => {
 
   return (
     <div className="App">
-      <Suspense fallback={<CircularProgress size={15} />}>
-        <CssBaseline />
-        <MySnackbar
-          open={appSnackbarOpen}
-          notification={appSnackbar}
-          onClose={() => setAppSnackbarOpen(false)}
-        />
-        <ThemeProvider theme={clientsTheme}>
-          <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-              <I18nextProvider i18n={i18n}>
-                <MySnackbarProvider
-                  setNotification={setAppSnackbar}
-                  show={setAppSnackbarOpen}
-                >
-                  <RouterConfig></RouterConfig>
-                </MySnackbarProvider>
-              </I18nextProvider>
-            </AuthProvider>
-          </QueryClientProvider>
-        </ThemeProvider>
-      </Suspense>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Suspense fallback={<CircularProgress size={15} />}>
+          <CssBaseline />
+          <MySnackbar
+            open={appSnackbarOpen}
+            notification={appSnackbar}
+            onClose={() => setAppSnackbarOpen(false)}
+          />
+          <ThemeProvider theme={clientsTheme}>
+            <QueryClientProvider client={queryClient}>
+              <AuthProvider>
+                <I18nextProvider i18n={i18n}>
+                  <MySnackbarProvider
+                    setNotification={setAppSnackbar}
+                    show={setAppSnackbarOpen}
+                  >
+                    <RouterConfig></RouterConfig>
+                  </MySnackbarProvider>
+                </I18nextProvider>
+              </AuthProvider>
+            </QueryClientProvider>
+          </ThemeProvider>
+        </Suspense>
+      </LocalizationProvider>
     </div>
   );
 };

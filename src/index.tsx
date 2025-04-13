@@ -1,3 +1,6 @@
+// Agrega esto temporalmente en tu archivo de entrada principal (index.tsx)
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';

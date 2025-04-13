@@ -1,4 +1,3 @@
-// src/routes/RouterConfig.tsx
 import React from 'react';
 import {
   BrowserRouter as Router,
@@ -15,10 +14,9 @@ import Register from 'pages/Register/Register';
 import DashboardLayout from 'layouts/DashboardLayout';
 import { Home } from 'pages/Home/Home';
 import ClientList from 'pages/ClientList/ClientList';
-// import ClientForm from '../pages/ClientForm';
-// import Error404 from '../pages/Error404';
+import ClientForm from 'pages/ClientForm/ClientForm';
+import Error404 from 'pages/Errors/Error404';
 
-// Componente para rutas privadas
 const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
   const { isAuthenticated } = useAuth();
 
@@ -47,15 +45,15 @@ const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
  *
  * @returns  The routing configuration for the application.
  */
-const RouterConfig = () => {
+const RouterConfig: React.FC = () => {
   return (
     <Router>
       <Switch>
-        {/* Rutas públicas */}
+        {/* Public Routes */}
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
 
-        {/* Rutas privadas */}
+        {/* Private Routes */}
         <PrivateRoute exact path="/">
           <DashboardLayout>
             <Home />
@@ -68,20 +66,24 @@ const RouterConfig = () => {
           </DashboardLayout>
         </PrivateRoute>
 
-        <PrivateRoute exact path="/clientes/nuevo">
-          {/*  <Home>
+        <PrivateRoute exact path="/clientes/crear">
+          <DashboardLayout>
             <ClientForm />
-          </Home> */}
+          </DashboardLayout>
         </PrivateRoute>
 
         <PrivateRoute exact path="/clientes/editar/:id">
-          {/*  <Home>
+          <DashboardLayout>
             <ClientForm />
-          </Home> */}
+          </DashboardLayout>
         </PrivateRoute>
 
-        {/* Ruta de error 404 */}
-        <Route path="*">{/*   <Error404 /> */}</Route>
+        {/* error 404 */}
+        <Route path="*">
+          <DashboardLayout>
+            <Error404 />
+          </DashboardLayout>
+        </Route>
       </Switch>
     </Router>
   );

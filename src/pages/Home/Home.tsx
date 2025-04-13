@@ -1,3 +1,4 @@
+import React from 'react';
 import { Toolbar, Typography } from '@mui/material';
 import { OutletContainer } from 'components/OutletContainer';
 import { useAuth } from 'contexts/AuthContext';

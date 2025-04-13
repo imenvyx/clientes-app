@@ -1,44 +1,54 @@
 {
-    "extends": [
-        "react-app",
-        "react-app/jest",
-        "plugin:@typescript-eslint/recommended",
-        "prettier",
-        "plugin:prettier/recommended",
-        "plugin:jsdoc/recommended"
-    ],
-    "rules": {
-        "prettier/prettier": [
-            "error",
-            {
-                "endOfLine": "auto"
-            }
-        ],
-        "@typescript-eslint/no-explicit-any": "off",
-        "no-console": "warn",
-        "prefer-const": "warn",
-        "jsdoc/require-param-type": 0,
-        "jsdoc/require-returns-type": 0,
-        "jsdoc/require-jsdoc": [
-            1,
-            {
-                "publicOnly": true,
-                "require": {
-                    "ArrowFunctionExpression": true,
-                    "FunctionDeclaration": true,
-                    "FunctionExpression": true,
-                    "ClassDeclaration": true,
-                    "ClassExpression": true,
-                    "MethodDefinition": true
-                }
-            }
-        ]
-    },
-    "settings": {
-        "jsdoc": {
-            "ignoreInternal": true,
-            "ignorePrivate": true
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:jsdoc/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "jsdoc"],
+  "rules": {
+    "prettier/prettier": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "no-console": "warn",
+    "prefer-const": "warn",
+    "jsdoc/require-param-type": 0,
+    "jsdoc/require-returns-type": 0,
+    "jsdoc/require-jsdoc": [
+      1,
+      {
+        "publicOnly": true,
+        "require": {
+          "ArrowFunctionExpression": true,
+          "FunctionDeclaration": true,
+          "FunctionExpression": true,
+          "ClassDeclaration": true,
+          "ClassExpression": true,
+          "MethodDefinition": true
         }
+      }
+    ]
+  },
+  "settings": {
+    "jsdoc": {
+      "ignoreInternal": true,
+      "ignorePrivate": true
     },
-    "plugins": ["@typescript-eslint", "jsdoc"]
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "extends": [
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+      ]
+    }
+  ]
 }

@@ -1,18 +1,19 @@
 import axios, { AxiosResponse } from 'axios';
-import { ClientCommon, LoginPayload, LoginSuccessResponse } from './types';
-import { useAuth } from 'contexts/AuthContext';
+import {
+  ClientCommon,
+  ClientFormData,
+  ClientListPayload,
+  Interest,
+  LoginPayload,
+  LoginSuccessResponse,
+} from './types';
 
-// 3. Configuración de Axios
-const api = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL,
-});
+const authData = localStorage.getItem('authData');
 
-// Función para obtener el token de localStorage
 const getAuthToken = () => {
-  const authData = localStorage.getItem('authData');
   if (authData) {
     try {
-      const { token } = JSON.parse(authData);
+      const { token } = JSON.parse(authData) as { token: string };
       return `Bearer ${token}`;
     } catch (error) {
       return '';
@@ -20,36 +21,29 @@ const getAuthToken = () => {
   }
   return '';
 };
-// 4. Interceptor con tipado correcto
+
+const api = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL,
+  headers: { 'X-Requested-With': 'XMLHttpRequest' },
+  responseEncoding: 'utf8',
+});
+
 api.interceptors.request.use((config) => {
   const token = getAuthToken();
   if (token && config.headers) {
     config.headers.Authorization = `${token}`;
   }
+
   return config;
 });
 
-// 5. Funciones API con tipado mejorado
-export const fetchClients = async (
-  usuarioId: string,
-  identificacion?: string,
-  nombre?: string
-): Promise<AxiosResponse<ClientCommon[]>> => {
-  try {
-    return api.post('api/Cliente/Listado', {
-      identificacion,
-      nombre,
-      usuarioId,
-    });
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(error?.response?.data?.title);
-    } else {
-      throw new Error('Unknown error occurred');
-    }
-  }
-};
-
+/**
+ * Authenticates a user with the provided username and password.
+ *
+ * @param {string} username - The username of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<AxiosResponse<LoginSuccessResponse>>} - A promise resolving to the login success response.
+ */
 export const login = async (
   username: string,
   password: string
@@ -62,13 +56,22 @@ export const login = async (
     );
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error(error?.response?.data?.title);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      throw new Error(error?.response?.data?.title as string);
     } else {
       throw new Error('Unknown error occurred');
     }
   }
 };
 
+/**
+ * Registers a new user with the provided username, email, and password.
+ *
+ * @param {string} username - The username of the new user.
+ * @param {string} email - The email address of the new user.
+ * @param {string} password - The password for the new user.
+ * @returns {Promise<AxiosResponse<void>>} - A promise resolving to the registration response.
+ */
 export const register = async (
   username: string,
   email: string,
@@ -82,7 +85,75 @@ export const register = async (
     });
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message);
+      const errorMessage =
+        (error.response?.data as { message?: string })?.message ||
+        'An error occurred';
+      throw new Error(errorMessage);
+    } else {
+      throw new Error('Unknown error occurred');
+    }
+  }
+};
+
+/**
+ * Fetches a list of clients based on the provided filters.
+ *
+ * @param {ClientListPayload} data - The payload containing filters for the client list.
+ * @returns - A promise resolving to the list of clients.
+ */
+export const fetchClients = async (
+  data: ClientListPayload
+): Promise<AxiosResponse<ClientCommon[]>> => {
+  try {
+    return await api.post('api/Cliente/Listado', {
+      identificacion: data.identificacion,
+      nombre: data.nombre,
+      usuarioId: data.usuarioId,
+    });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorMessage =
+        (error.response?.data as { message?: string })?.message ||
+        'An error occurred';
+      throw new Error(errorMessage);
+    } else {
+      throw new Error('Unknown error occurred');
+    }
+  }
+};
+
+/**
+ * Fetches a list of interests.
+ *
+ * @returns - A promise resolving to the list of interests.
+ */
+export const fetchInterests = async (): Promise<AxiosResponse<Interest[]>> => {
+  try {
+    return await api.get('api/Intereses/Listado');
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorData = error.response?.data as { title?: string };
+      throw new Error(errorData?.title || 'An error occurred');
+    } else {
+      throw new Error('Unknown error occurred');
+    }
+  }
+};
+
+/**
+ * Creates a new client with the provided data.
+ *
+ * @param {ClientFormData} data - The data of the client to be created.
+ * @returns  - A promise resolving to the response of the client creation.
+ */
+export const createClient = async (
+  data: ClientFormData
+): Promise<AxiosResponse<any>> => {
+  try {
+    return await api.post('api/Cliente/Crear', data);
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.message);
     } else {
       throw new Error('Unknown error occurred');
     }

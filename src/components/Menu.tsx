@@ -1,10 +1,10 @@
+import React from 'react';
 import {
   Avatar,
   Box,
   Divider,
   Drawer,
   List,
-  ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -17,7 +17,12 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useState } from 'react';
 import { useAuth } from 'contexts/AuthContext';
 
-export const Menu = () => {
+/**
+ * Menu component that renders a navigation drawer with user information and navigation links.
+ *
+ * @returns The rendered Menu component.
+ */
+export const Menu = (): JSX.Element => {
   const drawerWidth = 240;
   const [mobileOpen, setMobileOpen] = useState(false);
   const { userData } = useAuth();

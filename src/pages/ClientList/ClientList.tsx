@@ -18,9 +18,19 @@ import {
   CardContent,
   CardHeader,
   Typography,
+  Stack,
+  Button,
+  Grid,
 } from '@mui/material';
-import { Search, Edit, Delete } from '@mui/icons-material';
-import { ClientCommon, PagedResults } from 'services/types';
+import {
+  Search,
+  Edit,
+  Delete,
+  Add,
+  KeyboardBackspace,
+} from '@mui/icons-material';
+
+import { ClientCommon, ClientListPayload, PagedResults } from 'services/types';
 import { useQuery } from '@tanstack/react-query';
 import { ReactQueryKeys } from 'lib/reactQuery/reactQueryKeys';
 import { fetchClients } from 'services/api';
@@ -37,10 +47,16 @@ const ClientList = () => {
   const mySnackbar = useMySnackbar();
   const { userData } = useAuth();
 
-  const clients = useQuery<AxiosResponse<ClientCommon[]>, Error>(
+  const { data } = useQuery<AxiosResponse<ClientCommon[]>, Error>(
     [ReactQueryKeys.ClientList],
     () => {
-      return fetchClients(userData?.userid as string);
+      const userId = userData?.userid as string;
+      const data: ClientListPayload = {
+        nombre: '',
+        identificacion: '',
+        usuarioId: userId || '',
+      };
+      return fetchClients(data);
     },
     {
       onError: (error: Error) => {
@@ -49,10 +65,10 @@ const ClientList = () => {
     }
   );
 
-  console.log(clients);
+  console.log(data);
 
   // useEffect(() => {
-  //   const filtered = clients.filter((client) => {
+  //   const filtered = data?.data.filter((client) => {
   //     const matchesName = client.nombre
   //       .toLowerCase()
   //       .includes(searchName.toLowerCase());
@@ -74,56 +90,70 @@ const ClientList = () => {
             display: 'flex',
             justifyContent: 'space-between',
             height: '100%',
-            mb: 3,
+            p: 3,
           }}
         >
           <Typography variant="h2">Consulta de clientes</Typography>
-
-          <IconButton
-            color="primary"
-            onClick={() => history.push('/clientes/crear')}
-          >
-            <Edit />
-          </IconButton>
+          <Stack direction={'row'} spacing={2}>
+            <Button
+              color="primary"
+              variant="contained"
+              startIcon={<Add />}
+              onClick={() => history.push('/clientes/crear')}
+            >
+              Agregar
+            </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              startIcon={<KeyboardBackspace />}
+              onClick={() => history.push('/')}
+            >
+              Regresar
+            </Button>
+          </Stack>
         </Box>
-        <Divider sx={{ mb: 3 }} />
-        <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
-          <TextField
-            label="Nombre"
-            variant="outlined"
-            fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-          />
+        <Divider />
+        <Grid container sx={{ gap: 2, p: 3 }}>
+          <Grid item xs={12} sm={5}>
+            <TextField
+              label="Nombre"
+              variant="outlined"
+              fullWidth
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <TextField
+              label="Identificación"
+              variant="outlined"
+              fullWidth
+              value={searchId}
+              onChange={(e) => setSearchId(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={1} sx={{ alignItems: 'center' }}>
+            <IconButton
+              color="primary"
+              sx={{
+                height: '50px',
+                width: '50px',
+                border: '2px solid',
+                borderColor: 'primary.main',
+              }}
+            >
+              <Search sx={{ height: '30px', width: '30px' }} />
+            </IconButton>
+          </Grid>
+        </Grid>
 
-          <TextField
-            label="Identificación"
-            variant="outlined"
-            fullWidth
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-            value={searchId}
-            onChange={(e) => setSearchId(e.target.value)}
-          />
-        </Box>
-        <Divider sx={{ mb: 3 }} />
+        <Divider />
 
         <TableContainer
           component={Paper}
           elevation={3}
-          sx={{ borderRadius: 2 }}
+          sx={{ borderRadius: 2, p: 3 }}
         >
           <Table>
             <TableHead sx={{ bgcolor: 'primary.main' }}>
@@ -135,7 +165,7 @@ const ClientList = () => {
             </TableHead>
 
             <TableBody>
-              {filteredClients.map((client) => (
+              {data?.data?.map((client) => (
                 <TableRow key={client.id}>
                   <TableCell>{client.identificacion}</TableCell>
                   <TableCell>{`${client.nombre} ${client.apellidos}`}</TableCell>
@@ -155,6 +185,18 @@ const ClientList = () => {
                   </TableCell>
                 </TableRow>
               ))}
+              <TableRow>
+                <TableCell>{''}</TableCell>
+                <TableCell>{''} </TableCell>
+                <TableCell>
+                  <IconButton color="primary">
+                    <Edit />
+                  </IconButton>
+                  <IconButton color="error">
+                    <Delete />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>

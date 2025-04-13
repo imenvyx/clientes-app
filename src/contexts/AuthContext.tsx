@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     {}
   );
   const [userData, setUserData] = useState<UserData | null>(
-    () => valueInLocalStorage ?? null
+    () => valueInLocalStorage as UserData
   );
   const [loading, setLoading] = useState(true);
 
