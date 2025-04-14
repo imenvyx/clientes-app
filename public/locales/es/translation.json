@@ -80,12 +80,16 @@
     "updatedSuccesfull": "Cliente ha sido actualizado exitosamente"
   },
   "error": {
-    "notFound404": " Oops... Página no encontrada!"
+    "notFound404": " Oops... Página no encontrada!",
+    "onlyPhoto": "Solo se permiten archivos de imagen"
   },
   "deleteModal": {
     "title": "Eliminar cliente",
     "description": "¿Está seguro de que desea eliminar este cliente?",
     "deleteButton": "Eliminar",
     "cancelButton": "Cancelar"
+  },
+  "navbar": {
+    "title": "Cliente Dashboard"
   }
 }

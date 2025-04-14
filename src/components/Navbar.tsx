@@ -13,7 +13,7 @@ import { useAuth } from 'contexts/AuthContext';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useDrawer } from 'contexts/DrawerProvider';
 import { useTranslation } from 'react-i18next';
-import { ThemeContext } from '@emotion/react';
+import { t } from 'i18next';
 
 /**
  * Navbar component that displays the application header with a menu toggle,
@@ -35,7 +35,6 @@ export const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Implement logout functionality here
     logout();
   };
 
@@ -58,7 +57,7 @@ export const Navbar = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap component="div">
-          Cliente Dashboard
+          {t('navbar.title')}
         </Typography>
         <Stack
           direction={'row'}

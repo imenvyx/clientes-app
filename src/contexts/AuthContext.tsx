@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useLocalStorage<UserData | null>('authData', null);
 
   const [loading, setLoading] = useState(true);
-  console.log(';(');
+
   // Verificar token al montar el componente
   useEffect(() => {
     const checkAuthValidity = () => {
@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = useCallback(
     (data: UserData) => {
       setLocalStorageData(data);
+      setLoading(false);
     },
     [setLocalStorageData]
   );

@@ -80,12 +80,16 @@
     "updatedSuccesfull": "Client has been successfully updated"
   },
   "error": {
-    "notFound404": "Oops... Page not found!"
+    "notFound404": "Oops... Page not found!",
+    "onlyPhoto": "Only image files are allowed"
   },
   "deleteModal": {
     "title": "Delete Client",
     "description": "Are you sure you want to delete this client?",
     "deleteButton": "Delete",
     "cancelButton": "Cancel"
+  },
+  "navbar": {
+    "title": "Dashboard Clients"
   }
 }

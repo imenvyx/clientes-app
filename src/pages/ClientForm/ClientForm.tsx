@@ -140,7 +140,7 @@ const ClientForm = () => {
     if (file) {
       if (!file.type.startsWith('image/')) {
         mySnackbar.showWithMessage({
-          message: 'Solo se permiten archivos de imagen',
+          message: t('error.onlyPhoto'),
           type: 'error',
         });
         return;
@@ -163,7 +163,6 @@ const ClientForm = () => {
         : createClient(clientData as AddClientFormData);
     },
     onSuccess: async () => {
-      clearErrors();
       mySnackbar.showWithMessage({
         message: id
           ? t('clientForm.updatedSuccesfull')
@@ -186,6 +185,7 @@ const ClientForm = () => {
   const onSubmit: SubmitHandler<AddClientFormData> = (
     data: AddClientFormData
   ) => {
+    clearErrors();
     const usuarioId = userData?.userid as string;
     const payload = id ? { ...data, id, usuarioId } : { ...data, usuarioId };
 
@@ -196,7 +196,8 @@ const ClientForm = () => {
     <OutletContainer>
       <Paper
         component="form"
-        onSubmit={() => {
+        onSubmit={(e) => {
+          e.preventDefault();
           void handleSubmit(onSubmit)();
         }}
         sx={{ mt: 3 }}
@@ -385,9 +386,7 @@ const ClientForm = () => {
                 <DatePicker
                   sx={{ width: '100%' }}
                   label={t('clientForm.afilationDate')}
-                  value={
-                    typeof field.value === 'string' ? dayjs(field.value) : null
-                  }
+                  value={field.value ? dayjs(field.value) : null}
                   onChange={(date) => field.onChange(date?.toISOString())}
                 />
               )}
