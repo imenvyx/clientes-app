@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import {
   Box,
@@ -18,49 +15,40 @@ import {
   Avatar,
   Paper,
   IconButton,
-  ButtonGroup,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { OutletContainer } from 'components/OutletContainer';
 import dayjs from 'dayjs';
 import { KeyboardBackspace, Save } from '@mui/icons-material';
-import { useHistory } from 'react-router-dom';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useHistory, useParams } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
-import { ClientFormData, Interest } from 'services/types';
-import { createClient, fetchInterests } from 'services/api';
+import {
+  Client,
+  AddClientFormData,
+  Interest,
+  UpdateClientFormData,
+} from 'services/types';
+import {
+  clientInfo,
+  createClient,
+  fetchInterests,
+  updateClient,
+} from 'services/api';
 import { useMySnackbar } from 'contexts/MySnackbarProvider';
 import { ReactQueryKeys } from 'lib/reactQuery/reactQueryKeys';
 import { useAuth } from 'contexts/AuthContext';
 import { Edit } from '@mui/icons-material';
 
-const ClientForm = ({ initialValues }: { initialValues?: ClientFormData }) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    clearErrors,
-  } = useForm<ClientFormData>({
-    defaultValues:
-      typeof initialValues === 'undefined'
-        ? {
-            identificacion: '',
-            nombre: '',
-            apellidos: '',
-            celular: '',
-            otroTelefono: '',
-            direccion: '',
-            fNacimiento: '',
-            fAfiliacion: '',
-            sexo: '',
-            resennaPersonal: '',
-            imagen: '',
-            interesFK: '',
-            usuarioId: '',
-          }
-        : initialValues,
-    mode: 'onChange',
-  });
+/**
+ * ClientForm component is used for creating or editing client information.
+ * It fetches client data if an ID is provided and allows form submission for saving the data.
+ *
+ * @returns  The rendered ClientForm component.
+ */
+const ClientForm = () => {
+  const { id } = useParams<{ id: string }>();
+
   const history = useHistory();
   const mySnackbar = useMySnackbar();
   const { userData } = useAuth();
@@ -77,6 +65,71 @@ const ClientForm = ({ initialValues }: { initialValues?: ClientFormData }) => {
       },
     }
   );
+
+  const { data, isSuccess } = useQuery<AxiosResponse<Client>, Error>(
+    [ReactQueryKeys.Client, id],
+    () => {
+      return clientInfo(id);
+    },
+    {
+      enabled: !!id,
+      onError: (error: Error) => {
+        mySnackbar.showWithMessage({ message: error.message, type: 'error' });
+      },
+    }
+  );
+
+  const initialValues = useMemo(() => {
+    return isSuccess
+      ? {
+          identificacion: data?.data?.identificacion,
+          nombre: data?.data?.nombre,
+          apellidos: data?.data?.apellidos,
+          celular: data?.data?.telefonoCelular,
+          otroTelefono: data?.data?.otroTelefono,
+          direccion: data?.data?.direccion,
+          fNacimiento: data?.data?.fNacimiento,
+          fAfiliacion: data?.data?.fAfiliacion,
+          sexo: data?.data?.sexo,
+          resennaPersonal: data?.data?.resenaPersonal,
+          imagen: data?.data?.imagen,
+          interesFK: data?.data?.interesesId,
+        }
+      : {
+          identificacion: '',
+          nombre: '',
+          apellidos: '',
+          celular: '',
+          otroTelefono: '',
+          direccion: '',
+          fNacimiento: '',
+          fAfiliacion: '',
+          sexo: '',
+          resennaPersonal: '',
+          imagen: '',
+          interesFK: '',
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    clearErrors,
+  } = useForm<AddClientFormData>({
+    defaultValues: initialValues,
+    mode: 'onChange',
+  });
+
+  useEffect(() => {
+    if (isSuccess && data?.data) {
+      Object.entries(initialValues).forEach(([key, value]) => {
+        setValue(key as keyof AddClientFormData, value);
+      });
+    }
+  }, [isSuccess, data, initialValues, setValue]);
 
   const handleImageUpload = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -102,36 +155,51 @@ const ClientForm = ({ initialValues }: { initialValues?: ClientFormData }) => {
     }
   };
 
-  const onSubmit: SubmitHandler<ClientFormData> = async (
-    data: ClientFormData
-  ) => {
-    const usuarioId = userData?.userid as string;
-    try {
-      const payload = {
-        ...data,
-        usuarioId,
-      };
-      const response = await createClient(payload);
-      if (response.status === 200) {
-        clearErrors();
-        mySnackbar.showWithMessage({
-          message: 'Cliente ha sido creado exitosamente',
-          type: 'success',
-        });
-        await queryClient.invalidateQueries([ReactQueryKeys.ClientList]);
-        history.push('/clientes');
-      }
-    } catch (error: any) {
+  const mutation = useMutation({
+    mutationFn: (clientData: AddClientFormData | UpdateClientFormData) => {
+      return id
+        ? updateClient(clientData as UpdateClientFormData)
+        : createClient(clientData as AddClientFormData);
+    },
+    onSuccess: async () => {
+      clearErrors();
       mySnackbar.showWithMessage({
-        message: error?.message as string,
+        message: id
+          ? 'Cliente ha sido actualizado exitosamente'
+          : 'Cliente ha sido creado exitosamente',
+        type: 'success',
+      });
+      await queryClient.invalidateQueries([ReactQueryKeys.ClientList]);
+      history.push('/clientes');
+    },
+    onError: (error: unknown) => {
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unknown error occurred';
+      mySnackbar.showWithMessage({
+        message: errorMessage,
         type: 'error',
       });
-    }
+    },
+  });
+
+  const onSubmit: SubmitHandler<AddClientFormData> = (
+    data: AddClientFormData
+  ) => {
+    const usuarioId = userData?.userid as string;
+    const payload = id ? { ...data, id, usuarioId } : { ...data, usuarioId };
+
+    mutation.mutate(payload);
   };
 
   return (
     <OutletContainer>
-      <Paper component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
+      <Paper
+        component="form"
+        onSubmit={() => {
+          void handleSubmit(onSubmit)();
+        }}
+        sx={{ mt: 3 }}
+      >
         <Box
           sx={{
             display: 'flex',
@@ -191,6 +259,7 @@ const ClientForm = ({ initialValues }: { initialValues?: ClientFormData }) => {
               startIcon={<Save />}
               type="submit"
               size="small"
+              disabled={mutation.isLoading}
             >
               Guardar
             </Button>
@@ -200,6 +269,7 @@ const ClientForm = ({ initialValues }: { initialValues?: ClientFormData }) => {
               size="small"
               startIcon={<KeyboardBackspace />}
               onClick={() => history.push('/')}
+              disabled={mutation.isLoading}
             >
               Regresar
             </Button>

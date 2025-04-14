@@ -1,14 +1,6 @@
 import React from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
-import {
-  AppBar,
-  Avatar,
-  Box,
-  IconButton,
-  Stack,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAuth } from 'contexts/AuthContext';
 import { useState } from 'react';
@@ -55,7 +47,7 @@ export const Navbar = () => {
             }
           }
         >
-          COMPAÑIA PRUEBA
+          Cliente Dashboard
         </Typography>
         <Stack
           direction={'row'}

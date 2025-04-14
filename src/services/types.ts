@@ -15,20 +15,24 @@ export interface ClientListPayload {
   usuarioId: string;
 }
 
-export interface ClientFormData {
-  identificacion: string; // tamaño máximo 20
-  nombre: string; // tamaño máximo 100
-  apellidos: string; // tamaño máximo 100
-  celular: string; // tamaño máximo 20
-  otroTelefono?: string; // tamaño máximo 20
-  direccion: string; // tamaño máximo 200
-  fNacimiento: string; // formato: "YYYY-MM-DD"
-  fAfiliacion: string; // formato: "YYYY-MM-DD"
-  sexo: string; // tamaño máximo 1
-  resennaPersonal: string; // tamaño máximo 200
-  imagen?: string; // base64 de la imagen
-  interesFK: string; // UUID
-  usuarioId: string; // Id usuario en sesión
+export interface AddClientFormData {
+  identificacion: string;
+  nombre: string;
+  apellidos: string;
+  celular: string;
+  otroTelefono?: string;
+  direccion: string;
+  fNacimiento: string;
+  fAfiliacion: string;
+  sexo: string;
+  resennaPersonal: string;
+  imagen?: string;
+  interesFK: string;
+  usuarioId: string;
+}
+
+export interface UpdateClientFormData extends AddClientFormData {
+  id: string;
 }
 
 export interface LoginSuccessResponse {
@@ -43,20 +47,18 @@ export interface Interest {
   descripcion: string;
 }
 
-export interface PagedResults<T> {
-  pageNumber: number;
-  totalPages: number;
-  pageSize: number;
-  currentPageSize: number;
-  currentFirstIndex: number;
-  currentLastIndex: number;
-  totalCount: number;
-  hasPrevious: boolean;
-  hasNext: boolean;
-  maxPageSize: number;
-  defaultPageSize: number;
-  sorts: string;
-  expands: string;
-  filters: string;
-  items: T[];
+export interface Client {
+  id: string;
+  nombre: string;
+  apellidos: string;
+  identificacion: string;
+  telefonoCelular: string;
+  otroTelefono?: string;
+  direccion: string;
+  fNacimiento: string;
+  fAfiliacion: string;
+  sexo: string;
+  resenaPersonal: string;
+  imagen?: string;
+  interesesId: string;
 }
