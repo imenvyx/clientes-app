@@ -79,7 +79,7 @@ export const Navbar = () => {
           </IconButton>
           <Typography variant="body1">{userData?.username}</Typography>
           <IconButton
-            color="secondary"
+            color="inherit"
             aria-label="add to shopping cart"
             size="large"
             onClick={handleLogout}
