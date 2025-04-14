@@ -1,9 +1,16 @@
 module.exports = {
-  //...
-  // resolve: {
-  //   alias: {
-  //     'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
-  //     'react/jsx-runtime': 'react/jsx-runtime.js',
-  //   },
-  // },
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react'],
+          },
+        },
+      },
+    ],
+  },
 };

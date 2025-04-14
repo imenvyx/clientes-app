@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import { NotificationMessage } from './types';
 import useClasses from 'hooks/useClasses';
-import { useTranslation } from 'react-i18next';
 
 import clsx from 'clsx';
 import InfoIcon from '@mui/icons-material/Info';
@@ -70,8 +69,6 @@ export interface SnackbarProps {
 export const MySnackbar = (props: SnackbarProps) => {
   const theme = useTheme();
   const classes = useClasses(useStyles(theme));
-
-  const { t } = useTranslation();
 
   const { open, onClose, notification } = props;
 

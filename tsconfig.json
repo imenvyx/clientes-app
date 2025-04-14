@@ -19,5 +19,5 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "src"
   },
-  "include": ["src"]
+  "include": ["src/**/*", "webpack.config.js"]
 }
