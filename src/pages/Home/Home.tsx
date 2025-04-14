@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
  *
  * @returns The rendered Home component.
  */
-export const Home = (): JSX.Element => {
+const Home = (): JSX.Element => {
   const { t } = useTranslation();
   return (
     <OutletContainer>
@@ -32,3 +32,5 @@ export const Home = (): JSX.Element => {
     </OutletContainer>
   );
 };
+
+export default Home;

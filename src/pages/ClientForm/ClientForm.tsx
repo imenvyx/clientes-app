@@ -239,8 +239,9 @@ const ClientForm = () => {
                         position: 'absolute',
                         bottom: 0,
                         right: 0,
-                        bgcolor: 'background.paper',
-                        '&:hover': { bgcolor: 'action.hover' },
+                        color: 'white',
+                        bgcolor: 'info.main',
+                        '&:hover': { bgcolor: 'info.main' },
                       }}
                     >
                       <Edit fontSize="small" />

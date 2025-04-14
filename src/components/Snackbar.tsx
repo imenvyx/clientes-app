@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   IconButton,
   Snackbar,
@@ -61,7 +61,7 @@ export interface SnackbarProps {
 }
 
 /**
- * Custom Snackbar component with support for KatanaNotificationMessage type
+ * Custom Snackbar component with support for NotificationMessage type
  *
  * @param props Component props
  * @returns Component
@@ -76,67 +76,61 @@ export const MySnackbar = (props: SnackbarProps) => {
     _: Event | React.SyntheticEvent<any, Event>,
     reason?: SnackbarCloseReason
   ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
     onClose();
   };
 
-  const getIcon = (type: NotificationMessage['type']) => {
-    const iconProps = { className: clsx(classes.icon, classes[type]) };
-    switch (type) {
-      case 'success':
-        return <CheckCircleIcon {...iconProps} />;
-      case 'error':
-        return <ErrorIcon {...iconProps} />;
-      case 'warning':
-        return <WarningIcon {...iconProps} />;
-      case 'info':
-      default:
-        return <InfoIcon {...iconProps} />;
-    }
-  };
+  const getIcon = useCallback(
+    (type: NotificationMessage['type']) => {
+      const iconProps = { className: clsx(classes.icon, classes[type]) };
+      switch (type) {
+        case 'success':
+          return <CheckCircleIcon {...iconProps} />;
+        case 'error':
+          return <ErrorIcon {...iconProps} />;
+        case 'warning':
+          return <WarningIcon {...iconProps} />;
+        case 'info':
+        default:
+          return <InfoIcon {...iconProps} />;
+      }
+    },
+    [classes]
+  );
 
   const shouldTruncate =
     props.truncate?.length !== -1 &&
     notification?.message?.length > (props.truncate?.length ?? 180);
 
   return (
-    <div>
-      <Snackbar
-        open={open}
-        autoHideDuration={notification.type === 'error' ? null : 10000}
-        onClose={handleClose}
-        ContentProps={{
-          'aria-describedby': 'message-id',
-        }}
-        message={
-          <span
-            id="message-id"
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
-            {getIcon(notification.type)}{' '}
-            {/* Use the icon based on notification type */}
-            {shouldTruncate
-              ? truncate(notification.message, {
-                  length: props.truncate?.length ?? 180,
-                })
-              : notification.message}
-          </span>
-        }
-        action={[
-          <IconButton
-            key="close"
-            aria-label="close"
-            color="inherit"
-            className={classes.close}
-            onClick={handleClose}
-          >
-            <CloseIcon />
-          </IconButton>,
-        ]}
-      />
-    </div>
+    <Snackbar
+      open={open}
+      autoHideDuration={notification.type === 'error' ? null : 10000}
+      onClose={handleClose}
+      ContentProps={{
+        'aria-describedby': 'message-id',
+      }}
+      message={
+        <span id="message-id" style={{ display: 'flex', alignItems: 'center' }}>
+          {getIcon(notification.type)}{' '}
+          {/* Use the icon based on notification type */}
+          {shouldTruncate
+            ? truncate(notification.message, {
+                length: props.truncate?.length ?? 180,
+              })
+            : notification.message}
+        </span>
+      }
+      action={[
+        <IconButton
+          key="close"
+          aria-label="close"
+          color="inherit"
+          className={classes.close}
+          onClick={handleClose}
+        >
+          <CloseIcon />
+        </IconButton>,
+      ]}
+    />
   );
 };

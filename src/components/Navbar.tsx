@@ -1,11 +1,19 @@
 import React from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
+import {
+  AppBar,
+  IconButton,
+  Stack,
+  Toolbar,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAuth } from 'contexts/AuthContext';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useDrawer } from 'contexts/DrawerProvider';
 import { useTranslation } from 'react-i18next';
+import { ThemeContext } from '@emotion/react';
 
 /**
  * Navbar component that displays the application header with a menu toggle,
@@ -16,7 +24,7 @@ import { useTranslation } from 'react-i18next';
 export const Navbar = () => {
   const { userData } = useAuth();
   const { i18n } = useTranslation();
-
+  const theme = useTheme();
   const { handleOpen } = useDrawer();
 
   const { logout } = useAuth();
@@ -36,7 +44,7 @@ export const Navbar = () => {
       position="fixed"
       sx={{
         width: '100%',
-        zIndex: 200,
+        zIndex: theme.zIndex.appBar,
       }}
     >
       <Toolbar>

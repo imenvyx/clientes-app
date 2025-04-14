@@ -11,7 +11,7 @@
   "common": {
     "validation": { "required": "Este campo es requerido" },
     "commonerror": "Ocurrió un error inesperado",
-    "loadingText": "Cargando..."
+    "loadingText": "Cargando contenido..."
   },
   "login": {
     "title": "Iniciar sesión",

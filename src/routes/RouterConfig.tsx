@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,15 +7,16 @@ import {
   RouteProps,
 } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-
-// Pages
-import Login from 'pages/Login/Login';
-import Register from 'pages/Register/Register';
+import LoadingFallback from 'components/LoadingFallback';
 import DashboardLayout from 'layouts/DashboardLayout';
-import { Home } from 'pages/Home/Home';
-import ClientList from 'pages/ClientList/ClientList';
-import ClientForm from 'pages/ClientForm/ClientForm';
-import Error404 from 'pages/Errors/Error404';
+
+// Lazy load de componentes
+const Login = lazy(() => import('pages/Login/Login'));
+const Register = lazy(() => import('pages/Register/Register'));
+const Home = lazy(() => import('pages/Home/Home'));
+const ClientList = lazy(() => import('pages/ClientList/ClientList'));
+const ClientForm = lazy(() => import('pages/ClientForm/ClientForm'));
+const Error404 = lazy(() => import('pages/Errors/Error404'));
 
 const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
   const { isAuthenticated } = useAuth();
@@ -25,7 +26,7 @@ const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
       {...rest}
       render={({ location }) =>
         isAuthenticated ? (
-          children
+          <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
         ) : (
           <Redirect
             to={{
@@ -39,21 +40,31 @@ const PrivateRoute: React.FC<RouteProps> = ({ children, ...rest }) => {
   );
 };
 
-/**
- * RouterConfig is the main routing component of the application.
- * It defines public and private routes and handles redirection for unauthorized access.
- *
- * @returns  The routing configuration for the application.
- */
 const RouterConfig: React.FC = () => {
   return (
     <Router>
       <Switch>
-        {/* Public Routes */}
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
+        {/* Rutas públicas */}
+        <Route
+          exact
+          path="/login"
+          render={() => (
+            <Suspense fallback={<LoadingFallback />}>
+              <Login />
+            </Suspense>
+          )}
+        />
+        <Route
+          exact
+          path="/register"
+          render={() => (
+            <Suspense fallback={<LoadingFallback />}>
+              <Register />
+            </Suspense>
+          )}
+        />
 
-        {/* Private Routes */}
+        {/* Rutas privadas */}
         <PrivateRoute exact path="/">
           <DashboardLayout>
             <Home />
@@ -78,12 +89,17 @@ const RouterConfig: React.FC = () => {
           </DashboardLayout>
         </PrivateRoute>
 
-        {/* error 404 */}
-        <Route path="*">
-          <DashboardLayout>
-            <Error404 />
-          </DashboardLayout>
-        </Route>
+        {/* Ruta 404 */}
+        <Route
+          path="*"
+          render={() => (
+            <DashboardLayout>
+              <Suspense fallback={<LoadingFallback />}>
+                <Error404 />
+              </Suspense>
+            </DashboardLayout>
+          )}
+        />
       </Switch>
     </Router>
   );

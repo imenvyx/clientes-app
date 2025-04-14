@@ -17,6 +17,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useAuth } from 'contexts/AuthContext';
 import { useDrawer } from 'contexts/DrawerProvider';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 /**
  * Menu component that renders a navigation drawer with user information and navigation links.
@@ -53,18 +54,22 @@ export const Menu = () => {
       </Toolbar>
       <Divider />
       <List>
-        <ListItemButton href="/" sx={{}}>
-          <ListItemIcon sx={{ color: 'primary.main' }}>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('menu.home')} />
-        </ListItemButton>
-        <ListItemButton href="/clientes">
-          <ListItemIcon sx={{ color: 'primary.main' }}>
-            <PeopleAltIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('menu.clients')} />
-        </ListItemButton>
+        <Link to="/" style={{ textDecoration: 'none' }}>
+          <ListItemButton>
+            <ListItemIcon sx={{ color: 'primary.main' }}>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary={t('menu.home')} />
+          </ListItemButton>
+        </Link>
+        <Link to="/clientes" style={{ textDecoration: 'none' }}>
+          <ListItemButton>
+            <ListItemIcon sx={{ color: 'primary.main' }}>
+              <PeopleAltIcon />
+            </ListItemIcon>
+            <ListItemText primary={t('menu.clients')} />
+          </ListItemButton>
+        </Link>
       </List>
     </>
   );
@@ -75,7 +80,7 @@ export const Menu = () => {
       open={open}
       sx={{
         flexShrink: { sm: 0 },
-        zIndex: 100,
+        zIndex: theme.zIndex.drawer,
         width: open ? drawerWidth : 0,
         [`& .MuiDrawer-paper`]: {
           bgcolor: (theme) => theme.palette.background.default,

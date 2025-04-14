@@ -9,14 +9,28 @@ void i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'es',
-    debug: process.env.NODE_ENV === 'development',
+    // debug: process.env.NODE_ENV === 'development',
     interpolation: {
       escapeValue: false,
     },
     backend: {
       loadPath: '/locales/{{lng}}/{{ns}}.json',
     },
+    defaultNS: 'translation',
+    ns: ['translation'],
   });
+
+void (async () => {
+  try {
+    await i18n.loadNamespaces('translation');
+  } catch (error) {
+    handleError('Error loading namespaces:', error);
+  }
+})();
+
+function handleError(message: string, error: unknown): void {
+  // Replace this with your custom error handling logic
+  throw new Error(message);
+}
 
 export default i18n;

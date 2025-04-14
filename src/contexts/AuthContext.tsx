@@ -5,6 +5,8 @@ import React, {
   useState,
   ReactNode,
   useEffect,
+  useMemo,
+  useCallback,
 } from 'react';
 
 type UserData = {
@@ -25,58 +27,60 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 /**
- * AuthProvider is a context provider that manages authentication state,
- * including user data, login, logout, and loading state.
+ * Provides authentication context to its children.
  *
- * @param {object} props - The props for the AuthProvider component.
- * @param {ReactNode} props.children - The child components to render within the provider.
- * @returns  The rendered AuthProvider component.
+ * @param props - The component props.
+ * @param {ReactNode} props.children - The child components to wrap with the provider.
+ * @returns The AuthContext provider with its children.
  */
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [valueInLocalStorage, setValueInLocalStorage] = useLocalStorage(
-    'authData',
-    {}
-  );
-  const [userData, setUserData] = useState<UserData | null>(
-    () => valueInLocalStorage as UserData
-  );
+  const [localStorageData, setLocalStorageData] =
+    useLocalStorage<UserData | null>('authData', null);
+
   const [loading, setLoading] = useState(true);
+  console.log(';(');
+  // Verificar token al montar el componente
+  useEffect(() => {
+    const checkAuthValidity = () => {
+      if (
+        !(
+          localStorageData?.token &&
+          localStorageData?.expiration &&
+          new Date(localStorageData.expiration) > new Date()
+        )
+      ) {
+        setLocalStorageData(null);
+      }
+    };
 
-  const login = React.useCallback(
+    checkAuthValidity();
+  }, [setLocalStorageData, localStorageData]);
+
+  const login = useCallback(
     (data: UserData) => {
-      // Guardar en localStorage
-      setValueInLocalStorage(data);
-      setUserData(data);
+      setLocalStorageData(data);
     },
-    [setValueInLocalStorage]
+    [setLocalStorageData]
   );
 
-  const logout = React.useCallback(() => {
-    // Limpiar almacenamiento local y estado
-    setValueInLocalStorage({});
-    setUserData(null);
-  }, [setValueInLocalStorage]);
+  const logout = useCallback(() => {
+    setLocalStorageData(null);
+  }, [setLocalStorageData]);
 
-  // Cargar datos de autenticación al iniciar
-  useEffect(() => {
-    if (!userData) {
-      logout();
-    }
-    setLoading(false);
-  }, [logout, userData]);
-
-  const value = {
-    userData,
-    isAuthenticated: !!userData?.token,
-    login,
-    logout,
-    loading,
-  };
+  // Memoiza el valor del contexto para evitar re-renders
+  const contextValue = useMemo(
+    () => ({
+      userData: localStorageData,
+      isAuthenticated: !!localStorageData?.token,
+      login,
+      logout,
+      loading,
+    }),
+    [localStorageData, login, logout, loading]
+  );
 
   return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 
@@ -84,7 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
  * Custom hook to access the authentication context.
  * Throws an error if used outside of an AuthProvider.
  *
- * @returns The authentication context value.
+ * @returns {AuthContextType} The authentication context value.
  */
 export const useAuth = () => {
   const context = useContext(AuthContext);

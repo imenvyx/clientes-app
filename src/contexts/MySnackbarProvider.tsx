@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { NotificationMessage } from 'components/types';
 import { createContext, ReactNode, useContext } from 'react';
 
@@ -31,19 +31,21 @@ export const MySnackbarContext = createContext({} as MySnackbarContextProps);
 export const MySnackbarProvider: React.FC<MySnackbarProviderProps> = (
   props
 ) => {
-  const showWithMessage = (notification: NotificationMessage) => {
-    props.setNotification(notification);
-    props.show(true);
-  };
+  const showWithMessage = React.useCallback(
+    (notification: NotificationMessage) => {
+      props.setNotification(notification);
+      props.show(true);
+    },
+    [props]
+  );
+
+  const values = useMemo(
+    () => ({ ...props, showWithMessage }),
+    [props, showWithMessage]
+  );
 
   return (
-    <MySnackbarContext.Provider
-      value={{
-        show: props.show,
-        setNotification: props.setNotification,
-        showWithMessage: showWithMessage,
-      }}
-    >
+    <MySnackbarContext.Provider value={values}>
       {props.children}
     </MySnackbarContext.Provider>
   );
@@ -54,5 +56,12 @@ export const MySnackbarProvider: React.FC<MySnackbarProviderProps> = (
  *
  * @returns My Snackbar Provider context object properties
  */
-export const useMySnackbar = (): MySnackbarContextProps =>
-  useContext(MySnackbarContext);
+export const useMySnackbar = (): MySnackbarContextProps => {
+  const context = useContext(MySnackbarContext);
+  if (!context) {
+    throw new Error(
+      'useMySnackbar debe usarse dentro de un MySnackbarProvider'
+    );
+  }
+  return context;
+};

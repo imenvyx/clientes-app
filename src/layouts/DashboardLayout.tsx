@@ -13,8 +13,8 @@ const drawerWidth = 240;
  * @param {React.ReactNode} children - The content to be displayed in the main area.
  * @returns The rendered layout component.
  */
-const DashboardLayout: React.FC = ({ children }) => {
-  return (
+const DashboardLayout = React.memo(
+  ({ children }: { children: React.ReactNode }) => (
     <Box sx={{ display: 'flex' }}>
       <Navbar />
       <Menu />
@@ -29,7 +29,7 @@ const DashboardLayout: React.FC = ({ children }) => {
         {children}
       </Box>
     </Box>
-  );
-};
+  )
+);
 
 export default DashboardLayout;

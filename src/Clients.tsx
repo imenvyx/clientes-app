@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import clientsTheme from 'components/Theme';
@@ -14,7 +14,8 @@ import { MySnackbarProvider } from 'contexts/MySnackbarProvider';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DrawerProvider } from 'contexts/DrawerProvider';
-import LoadingFallback from 'components/LoadingFallback';
+
+const queryClient = new QueryClient(QueryClientConfig);
 
 /**
  * The `Clientes` component is a functional React component that renders
@@ -23,8 +24,6 @@ import LoadingFallback from 'components/LoadingFallback';
  * @returns A React element representing the `Clientes` component.
  */
 const Clients = () => {
-  const queryClient = new QueryClient(QueryClientConfig);
-
   const [appSnackbarOpen, setAppSnackbarOpen] = useState(false);
   const [appSnackbar, setAppSnackbar] = useState<NotificationMessage>({
     message: '',
@@ -34,30 +33,28 @@ const Clients = () => {
   return (
     <div className="App">
       <I18nextProvider i18n={i18n}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Suspense fallback={<LoadingFallback />}>
+        <MySnackbarProvider
+          setNotification={setAppSnackbar}
+          show={setAppSnackbarOpen}
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <CssBaseline />
-            <MySnackbar
-              open={appSnackbarOpen}
-              notification={appSnackbar}
-              onClose={() => setAppSnackbarOpen(false)}
-            />
             <ThemeProvider theme={clientsTheme}>
               <QueryClientProvider client={queryClient}>
                 <AuthProvider>
-                  <MySnackbarProvider
-                    setNotification={setAppSnackbar}
-                    show={setAppSnackbarOpen}
-                  >
-                    <DrawerProvider>
-                      <RouterConfig></RouterConfig>
-                    </DrawerProvider>
-                  </MySnackbarProvider>
+                  <MySnackbar
+                    open={appSnackbarOpen}
+                    notification={appSnackbar}
+                    onClose={() => setAppSnackbarOpen(false)}
+                  />
+                  <DrawerProvider>
+                    <RouterConfig></RouterConfig>
+                  </DrawerProvider>
                 </AuthProvider>
               </QueryClientProvider>
             </ThemeProvider>
-          </Suspense>
-        </LocalizationProvider>
+          </LocalizationProvider>
+        </MySnackbarProvider>
       </I18nextProvider>
     </div>
   );

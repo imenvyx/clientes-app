@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "sourceMap": true,
     "outDir": "out",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -15,9 +15,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react", // Cambiado de "react-jsx" a "react"
+    "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "src"
   },
-  "include": ["src/**/*", "webpack.config.js"]
+  "include": ["src"]
 }

@@ -11,7 +11,7 @@
   "common": {
     "validation": { "required": "This field is required" },
     "commonerror": "An unexpected error occurred",
-    "loadingText": "Loading..."
+    "loadingText": "Loading data..."
   },
   "login": {
     "title": "Login",

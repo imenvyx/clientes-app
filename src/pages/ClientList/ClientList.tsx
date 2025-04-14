@@ -206,11 +206,7 @@ const ClientList = () => {
 
           <Divider />
 
-          <TableContainer
-            component={Paper}
-            elevation={3}
-            sx={{ borderRadius: 2, p: 3 }}
-          >
+          <TableContainer sx={{ p: 3 }}>
             <Table
               sx={{ minWidth: 750 }}
               aria-labelledby="tableTitle"
