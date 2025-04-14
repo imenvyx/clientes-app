@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-// Agrega esto temporalmente en tu archivo de entrada principal (index.tsx)
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import React from 'react';
