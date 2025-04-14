@@ -82,5 +82,8 @@
   "resolutions": {
     "@typescript-eslint/eslint-plugin": "5.59.11",
     "@typescript-eslint/parser": "5.59.11"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
