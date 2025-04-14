@@ -1,20 +1,19 @@
 // src/pages/Error404.tsx
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Container,
-  Typography,
-  useTheme,
-  Paper,
-} from '@mui/material';
-import { Home, Warning } from '@mui/icons-material';
+import { Box, Container, Typography, useTheme } from '@mui/material';
+import { Warning } from '@mui/icons-material';
 import { OutletContainer } from 'components/OutletContainer';
+import { useTranslation } from 'react-i18next';
 
+/**
+ * Error404 component renders a 404 error page with a warning icon and a message.
+ * It uses Material-UI for styling and supports translations.
+ *
+ * @returns The rendered 404 error page component.
+ */
 const Error404 = () => {
-  const history = useHistory();
   const theme = useTheme();
+  const { t } = useTranslation();
 
   return (
     <OutletContainer>
@@ -56,7 +55,7 @@ const Error404 = () => {
               color: theme.palette.text.secondary,
             }}
           >
-            Oops... Página no encontrada!
+            {t('error.notFound404')}
           </Typography>
         </Box>
       </Container>

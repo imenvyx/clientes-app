@@ -16,6 +16,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { useAuth } from 'contexts/AuthContext';
 import { useDrawer } from 'contexts/DrawerProvider';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Menu component that renders a navigation drawer with user information and navigation links.
@@ -27,6 +28,7 @@ export const Menu = () => {
   const { open } = useDrawer();
   const { userData } = useAuth();
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const drawer = (
     <>
@@ -46,7 +48,7 @@ export const Menu = () => {
         }}
       >
         <Typography variant="h6" fontWeight={'bold'}>
-          MENÚ
+          {t('menu.title')}
         </Typography>
       </Toolbar>
       <Divider />
@@ -55,13 +57,13 @@ export const Menu = () => {
           <ListItemIcon sx={{ color: 'primary.main' }}>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary="INICIO" />
+          <ListItemText primary={t('menu.home')} />
         </ListItemButton>
         <ListItemButton href="/clientes">
           <ListItemIcon sx={{ color: 'primary.main' }}>
             <PeopleAltIcon />
           </ListItemIcon>
-          <ListItemText primary="Consulta Clientes" />
+          <ListItemText primary={t('menu.clients')} />
         </ListItemButton>
       </List>
     </>

@@ -39,6 +39,7 @@ import { useMySnackbar } from 'contexts/MySnackbarProvider';
 import { ReactQueryKeys } from 'lib/reactQuery/reactQueryKeys';
 import { useAuth } from 'contexts/AuthContext';
 import { Edit } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 
 /**
  * ClientForm component is used for creating or editing client information.
@@ -48,7 +49,7 @@ import { Edit } from '@mui/icons-material';
  */
 const ClientForm = () => {
   const { id } = useParams<{ id: string }>();
-
+  const { t } = useTranslation();
   const history = useHistory();
   const mySnackbar = useMySnackbar();
   const { userData } = useAuth();
@@ -165,8 +166,8 @@ const ClientForm = () => {
       clearErrors();
       mySnackbar.showWithMessage({
         message: id
-          ? 'Cliente ha sido actualizado exitosamente'
-          : 'Cliente ha sido creado exitosamente',
+          ? t('clientForm.updatedSuccesfull')
+          : t('clientForm.addedSuccesfull'),
         type: 'success',
       });
       await queryClient.invalidateQueries([ReactQueryKeys.ClientList]);
@@ -174,7 +175,7 @@ const ClientForm = () => {
     },
     onError: (error: unknown) => {
       const errorMessage =
-        error instanceof Error ? error.message : 'An unknown error occurred';
+        error instanceof Error ? error.message : t('common.commonerror');
       mySnackbar.showWithMessage({
         message: errorMessage,
         type: 'error',
@@ -223,7 +224,7 @@ const ClientForm = () => {
                       bgcolor: 'primary.main',
                     }}
                     src={field.value}
-                  ></Avatar>
+                  />
                   <input
                     type="file"
                     accept="image/*"
@@ -249,7 +250,7 @@ const ClientForm = () => {
               )}
             />
             <Typography variant="h5" fontWeight={'bold'}>
-              Mantenimiento de clientes
+              {t('clientForm.title')}
             </Typography>
           </Stack>
           <Stack direction={'row'} spacing={2} height={'100%'}>
@@ -261,7 +262,7 @@ const ClientForm = () => {
               size="small"
               disabled={mutation.isLoading}
             >
-              Guardar
+              {t('buttons.save')}
             </Button>
             <Button
               color="primary"
@@ -271,7 +272,7 @@ const ClientForm = () => {
               onClick={() => history.push('/')}
               disabled={mutation.isLoading}
             >
-              Regresar
+              {t('buttons.back')}
             </Button>
           </Stack>
         </Box>
@@ -281,11 +282,11 @@ const ClientForm = () => {
             <Controller
               name="identificacion"
               control={control}
-              rules={{ required: 'Campo obligatorio' }}
+              rules={{ required: `${t('common.validation.required')}` }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Identificación *"
+                  label={t('clientForm.clientIdentification')}
                   fullWidth
                   error={!!errors.identificacion}
                   helperText={errors.identificacion?.message}
@@ -298,11 +299,11 @@ const ClientForm = () => {
             <Controller
               name="nombre"
               control={control}
-              rules={{ required: 'Campo obligatorio' }}
+              rules={{ required: `${t('common.validation.required')}` }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Nombre *"
+                  label={t('clientForm.name')}
                   fullWidth
                   error={!!errors.nombre}
                   helperText={errors.nombre?.message}
@@ -315,11 +316,11 @@ const ClientForm = () => {
             <Controller
               name="apellidos"
               control={control}
-              rules={{ required: 'Campo obligatorio' }}
+              rules={{ required: `${t('common.validation.required')}` }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Apellidos *"
+                  label={t('clientForm.lastName')}
                   fullWidth
                   error={!!errors.apellidos}
                   helperText={errors.apellidos?.message}
@@ -333,23 +334,25 @@ const ClientForm = () => {
               fullWidth
               sx={{ justifyContent: 'flex-start', display: 'flex' }}
             >
-              <InputLabel>Género *</InputLabel>
+              <InputLabel>{t('clientForm.gender.title')}</InputLabel>
               <Controller
                 name="sexo"
                 control={control}
-                rules={{ required: 'Campo obligatorio' }}
+                rules={{ required: `${t('common.validation.required')}` }}
                 render={({ field }) => (
                   <Select
                     {...field}
-                    label="Género *"
+                    label={t('clientForm.gender.title')}
                     error={!!errors.sexo}
                     SelectDisplayProps={{
                       'aria-labelledby': 'basic-button',
                       role: 'listbox',
                     }}
                   >
-                    <MenuItem value="F">Femenino</MenuItem>
-                    <MenuItem value="M">Masculino</MenuItem>
+                    <MenuItem value="F">
+                      {t('clientForm.gender.female')}
+                    </MenuItem>
+                    <MenuItem value="M">{t('clientForm.gender.male')}</MenuItem>
                   </Select>
                 )}
               />
@@ -360,11 +363,11 @@ const ClientForm = () => {
             <Controller
               name="fNacimiento"
               control={control}
-              rules={{ required: 'Campo obligatorio' }}
+              rules={{ required: `${t('common.validation.required')}` }}
               render={({ field }) => (
                 <DatePicker
                   sx={{ width: '100%' }}
-                  label="Fecha de nacimiento *"
+                  label={t('clientForm.birthDate')}
                   value={field.value ? dayjs(field.value) : null}
                   onChange={(date) => field.onChange(date?.toISOString())}
                 />
@@ -376,11 +379,11 @@ const ClientForm = () => {
             <Controller
               name="fAfiliacion"
               control={control}
-              rules={{ required: 'Campo obligatorio' }}
+              rules={{ required: `${t('common.validation.required')}` }}
               render={({ field }) => (
                 <DatePicker
                   sx={{ width: '100%' }}
-                  label="Fecha de afiliación *"
+                  label={t('clientForm.afilationDate')}
                   value={
                     typeof field.value === 'string' ? dayjs(field.value) : null
                   }
@@ -395,11 +398,11 @@ const ClientForm = () => {
             <Controller
               name="celular"
               control={control}
-              rules={{ required: 'Campo obligatorio' }}
+              rules={{ required: `${t('common.validation.required')}` }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Teléfono Celular *"
+                  label={t('clientForm.cellPhone')}
                   fullWidth
                   error={!!errors.celular}
                   helperText={errors.celular?.message}
@@ -411,12 +414,12 @@ const ClientForm = () => {
           <Grid item xs={12} sm={4}>
             <Controller
               name="otroTelefono"
-              rules={{ required: 'Campo obligatorio' }}
+              rules={{ required: `${t('common.validation.required')}` }}
               control={control}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Teléfono Otro"
+                  label={t('clientForm.otherPhone')}
                   fullWidth
                   error={!!errors.celular}
                   helperText={errors.celular?.message}
@@ -427,7 +430,7 @@ const ClientForm = () => {
 
           <Grid item xs={12} sm={4}>
             <FormControl fullWidth>
-              <InputLabel>Interés *</InputLabel>
+              <InputLabel>{t('clientForm.interest')}</InputLabel>
               <Controller
                 name="interesFK"
                 control={control}
@@ -435,11 +438,11 @@ const ClientForm = () => {
                 render={({ field }) => (
                   <Select
                     {...field}
-                    label="Interés *"
+                    label={t('clientForm.interest')}
                     error={!!errors.interesFK}
                   >
                     {interests.isLoading ? (
-                      <MenuItem disabled>Cargando intereses...</MenuItem>
+                      <MenuItem disabled>{t('common.loadingText')}</MenuItem>
                     ) : (
                       interests?.data?.data?.map((interest: Interest) => (
                         <MenuItem key={interest.id} value={interest.id}>
@@ -457,11 +460,11 @@ const ClientForm = () => {
             <Controller
               name="direccion"
               control={control}
-              rules={{ required: 'Campo obligatorio' }}
+              rules={{ required: `${t('common.validation.required')}` }}
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Dirección"
+                  label={t('clientForm.address')}
                   fullWidth
                   error={!!errors.direccion}
                   helperText={errors.direccion?.message}
@@ -477,7 +480,7 @@ const ClientForm = () => {
               render={({ field }) => (
                 <TextField
                   {...field}
-                  label="Reseña Personal"
+                  label={t('clientForm.summary')}
                   fullWidth
                   error={!!errors.resennaPersonal}
                   helperText={errors.resennaPersonal?.message}

@@ -3,8 +3,9 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAuth } from 'contexts/AuthContext';
-
+import LanguageIcon from '@mui/icons-material/Language';
 import { useDrawer } from 'contexts/DrawerProvider';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Navbar component that displays the application header with a menu toggle,
@@ -14,10 +15,16 @@ import { useDrawer } from 'contexts/DrawerProvider';
  */
 export const Navbar = () => {
   const { userData } = useAuth();
+  const { i18n } = useTranslation();
 
   const { handleOpen } = useDrawer();
 
   const { logout } = useAuth();
+
+  const toggleLanguage = async () => {
+    const newLang = i18n.language === 'en' ? 'es' : 'en';
+    await i18n.changeLanguage(newLang);
+  };
 
   const handleLogout = () => {
     // Implement logout functionality here
@@ -55,6 +62,13 @@ export const Navbar = () => {
             justifyContent: 'flex-end',
           }}
         >
+          <IconButton
+            color="inherit"
+            aria-label="toggle language"
+            onClick={() => void toggleLanguage()}
+          >
+            <LanguageIcon />
+          </IconButton>
           <Typography variant="body1">{userData?.username}</Typography>
           <IconButton
             color="secondary"

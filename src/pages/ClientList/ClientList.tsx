@@ -37,6 +37,7 @@ import { AxiosResponse } from 'axios';
 import { OutletContainer } from 'components/OutletContainer';
 import { useAuth } from 'contexts/AuthContext';
 import { DeleteModal, useMyModal } from 'components/DeleteModal';
+import { useTranslation } from 'react-i18next';
 
 /**
  * ClientList component renders a table of clients with search, pagination, and actions to edit or delete clients.
@@ -47,7 +48,7 @@ import { DeleteModal, useMyModal } from 'components/DeleteModal';
 const ClientList = () => {
   const history = useHistory();
   const mySnackbar = useMySnackbar();
-
+  const { t } = useTranslation();
   const { userData } = useAuth();
 
   const [searchParams, setSearchParams] = useState({
@@ -144,7 +145,7 @@ const ClientList = () => {
               p: 3,
             }}
           >
-            <Typography variant="h2">Consulta de clientes</Typography>
+            <Typography variant="h2">{t('clientList.title')}</Typography>
             <Stack direction={'row'} spacing={2}>
               <Button
                 color="primary"
@@ -152,7 +153,7 @@ const ClientList = () => {
                 startIcon={<Add />}
                 onClick={() => history.push('/clientes/crear')}
               >
-                Agregar
+                {t('buttons.add')}
               </Button>
               <Button
                 color="primary"
@@ -160,7 +161,7 @@ const ClientList = () => {
                 startIcon={<KeyboardBackspace />}
                 onClick={() => history.push('/')}
               >
-                Regresar
+                {t('clientList.back')}
               </Button>
             </Stack>
           </Box>
@@ -168,7 +169,7 @@ const ClientList = () => {
           <Grid container sx={{ gap: 2, p: 3 }}>
             <Grid item xs={12} sm={5}>
               <TextField
-                label="Nombre"
+                label={t('clientList.clientName')}
                 variant="outlined"
                 fullWidth
                 disabled={isFetching || isLoading}
@@ -178,7 +179,7 @@ const ClientList = () => {
             </Grid>
             <Grid item xs={12} sm={5}>
               <TextField
-                label="Identificación"
+                label={t('clientList.clientIdentification')}
                 variant="outlined"
                 fullWidth
                 disabled={isFetching || isLoading}
@@ -217,9 +218,15 @@ const ClientList = () => {
             >
               <TableHead sx={{ bgcolor: 'primary.main' }}>
                 <TableRow>
-                  <TableCell sx={{ color: 'white' }}>Identificación</TableCell>
-                  <TableCell sx={{ color: 'white' }}>Nombre completo</TableCell>
-                  <TableCell sx={{ color: 'white' }}>Acciones</TableCell>
+                  <TableCell sx={{ color: 'white' }}>
+                    {t('clientList.clientIdentification')}
+                  </TableCell>
+                  <TableCell sx={{ color: 'white' }}>
+                    {t('clientList.fullName')}
+                  </TableCell>
+                  <TableCell sx={{ color: 'white' }}>
+                    {t('clientList.actions')}
+                  </TableCell>
                 </TableRow>
               </TableHead>
 

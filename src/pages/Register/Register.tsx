@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 // src/pages/Register.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import {
@@ -13,6 +16,7 @@ import {
   Box,
 } from '@mui/material';
 import { register as registerUser } from 'services/api';
+import { t } from 'i18next';
 
 interface RegisterForm {
   username: string;
@@ -20,6 +24,12 @@ interface RegisterForm {
   password: string;
 }
 
+/**
+ * Register component renders a registration form for new users.
+ * It handles form submission and validation.˝
+ *
+ * @returns  The rendered registration form component.
+ */
 const Register = () => {
   const history = useHistory();
   const {
@@ -32,9 +42,12 @@ const Register = () => {
     mode: 'onBlur',
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
     clearErrors();
     try {
+      setIsLoading(true);
       await registerUser(data.username, data.email, data.password);
 
       history.push('/login');
@@ -43,6 +56,7 @@ const Register = () => {
         type: 'manual',
         message: error?.message,
       });
+      setIsLoading(false);
     }
   };
 
@@ -52,16 +66,25 @@ const Register = () => {
     const hasNumber = /\d/.test(value);
 
     if (value.length < 9 || value.length > 20) {
-      return 'La contraseña debe tener entre 9 y 20 caracteres';
+      return t('register.validatePassword.length');
     }
     if (!hasUpperCase || !hasLowerCase || !hasNumber) {
-      return 'Debe contener al menos una mayúscula, una minúscula y un número';
+      return t('register.validatePassword.upperCase');
     }
     return true;
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+      }}
+    >
       <Paper
         elevation={3}
         sx={{
@@ -74,7 +97,7 @@ const Register = () => {
         }}
       >
         <Typography component="h1" variant="h5" color="primary.main" mb={3}>
-          REGISTRO
+          {t('register.title')}
         </Typography>
 
         <Box
@@ -85,11 +108,11 @@ const Register = () => {
           <TextField
             fullWidth
             margin="normal"
-            label="Nombre Usuario *"
+            label={t('register.username')}
             error={!!errors.username}
             helperText={errors.username?.message}
             {...register('username', {
-              required: 'Este campo es requerido',
+              required: `${t('common.validation.required')}`,
               minLength: {
                 value: 3,
                 message: 'Mínimo 3 caracteres',
@@ -105,7 +128,7 @@ const Register = () => {
             error={!!errors.email}
             helperText={errors.email?.message}
             {...register('email', {
-              required: 'Este campo es requerido',
+              required: `${t('common.validation.required')}`,
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 message: 'Correo electrónico inválido',
@@ -121,7 +144,7 @@ const Register = () => {
             error={!!errors.password}
             helperText={errors.password?.message}
             {...register('password', {
-              required: 'Este campo es requerido',
+              required: `${t('common.validation.required')}`,
               validate: validatePassword,
             })}
           />
@@ -143,14 +166,15 @@ const Register = () => {
             color="primary"
             type="submit"
             sx={{ mt: 3, mb: 2 }}
+            disabled={isLoading}
           >
-            REGISTRARME
+            {t('register.registerButton')}
           </Button>
 
           <Grid container justifyContent="center">
             <Grid item>
               <Link href="/login" variant="body2">
-                ¿Ya tienes cuenta? Inicia sesión
+                {t('register.question')}
               </Link>
             </Grid>
           </Grid>

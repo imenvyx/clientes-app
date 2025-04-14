@@ -33,18 +33,18 @@ const Clients = () => {
 
   return (
     <div className="App">
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Suspense fallback={<LoadingFallback />}>
-          <CssBaseline />
-          <MySnackbar
-            open={appSnackbarOpen}
-            notification={appSnackbar}
-            onClose={() => setAppSnackbarOpen(false)}
-          />
-          <ThemeProvider theme={clientsTheme}>
-            <QueryClientProvider client={queryClient}>
-              <AuthProvider>
-                <I18nextProvider i18n={i18n}>
+      <I18nextProvider i18n={i18n}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Suspense fallback={<LoadingFallback />}>
+            <CssBaseline />
+            <MySnackbar
+              open={appSnackbarOpen}
+              notification={appSnackbar}
+              onClose={() => setAppSnackbarOpen(false)}
+            />
+            <ThemeProvider theme={clientsTheme}>
+              <QueryClientProvider client={queryClient}>
+                <AuthProvider>
                   <MySnackbarProvider
                     setNotification={setAppSnackbar}
                     show={setAppSnackbarOpen}
@@ -53,12 +53,12 @@ const Clients = () => {
                       <RouterConfig></RouterConfig>
                     </DrawerProvider>
                   </MySnackbarProvider>
-                </I18nextProvider>
-              </AuthProvider>
-            </QueryClientProvider>
-          </ThemeProvider>
-        </Suspense>
-      </LocalizationProvider>
+                </AuthProvider>
+              </QueryClientProvider>
+            </ThemeProvider>
+          </Suspense>
+        </LocalizationProvider>
+      </I18nextProvider>
     </div>
   );
 };

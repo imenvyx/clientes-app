@@ -1,0 +1,91 @@
+{
+  "welcome": "Welcome",
+  "buttons": {
+    "submit": "Submit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "back": "Back",
+    "delete": "Delete",
+    "add": "Add"
+  },
+  "common": {
+    "validation": { "required": "This field is required" },
+    "commonerror": "An unexpected error occurred",
+    "loadingText": "Loading..."
+  },
+  "login": {
+    "title": "Login",
+    "username": "Username",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot your password?",
+    "dontHaveAccount": "Don't have an account?",
+    "loginButton": "Login",
+    "register": "Register",
+    "registerButton": "Register",
+    "resetPassword": "Reset password"
+  },
+  "register": {
+    "title": "Register",
+    "username": "Username *",
+    "email": "Email",
+    "password": "Password",
+    "registerButton": "Register",
+    "question": "Already have an account? Login",
+    "validatePassword": {
+      "length": "The password must be between 9 and 20 characters",
+      "upperCase": "It must contain at least one uppercase letter, one lowercase letter, and one number"
+    }
+  },
+  "home": {
+    "welcome": "Welcome",
+    "description": "To the Client Management Dashboard"
+  },
+  "menu": {
+    "title": "MENU",
+    "home": "HOME",
+    "clients": "Client Lookup"
+  },
+  "clientList": {
+    "title": "Client Lookup",
+    "search": "Search",
+    "back": "Back",
+    "clientName": "Name",
+    "actions": "Actions",
+    "fullName": "Full Name",
+    "clientIdentification": "Identification"
+  },
+  "clientForm": {
+    "title": "Client Maintenance",
+    "name": "Name *",
+    "lastName": "Last Name *",
+    "identification": "Identification",
+    "email": "Email",
+    "cellPhone": "Cell Phone *",
+    "otherPhone": "Other Phone *",
+    "gender": {
+      "title": "Gender *",
+      "male": "Male",
+      "female": "Female"
+    },
+    "birthDate": "Birth Date *",
+    "afilationDate": "Affiliation Date *",
+    "clientIdentification": "Identification *",
+    "interest": "Interest *",
+    "address": "Address *",
+    "summary": "Personal Summary *",
+    "saveButton": "Save",
+    "cancelButton": "Cancel",
+    "addedSuccesfull": "Client has been successfully added",
+    "updatedSuccesfull": "Client has been successfully updated"
+  },
+  "error": {
+    "notFound404": "Oops... Page not found!"
+  },
+  "deleteModal": {
+    "title": "Delete Client",
+    "description": "Are you sure you want to delete this client?",
+    "deleteButton": "Delete",
+    "cancelButton": "Cancel"
+  }
+}

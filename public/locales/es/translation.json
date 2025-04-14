@@ -1,7 +1,17 @@
 {
   "welcome": "Bienvenido",
   "buttons": {
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "back": "Regresar",
+    "delete": "Eliminar",
+    "add": "Agregar"
+  },
+  "common": {
+    "validation": { "required": "Este campo es requerido" },
+    "commonerror": "Ocurrió un error inesperado",
+    "loadingText": "Cargando..."
   },
   "login": {
     "title": "Iniciar sesión",
@@ -14,6 +24,68 @@
     "register": "Registrarse",
     "registerButton": "Registrarse",
     "resetPassword": "Restablecer contraseña"
+  },
+  "register": {
+    "title": "Registrarse",
+    "username": "Nombre Usuario *",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "registerButton": "Registrarme",
+    "question": "¿Ya tienes cuenta? Inicia sesión",
+    "validatePassword": {
+      "length": "La contraseña debe tener entre 9 y 20 caracteres",
+      "upperCase": "Debe contener al menos una mayúscula, una minúscula y un número"
+    }
+  },
+  "home": {
+    "welcome": "Bienvenido",
+    "description": "Al Dashboard de gestión de clientes"
+  },
+  "menu": {
+    "title": "MENÚ",
+    "home": "INICIO",
+    "clients": "Consulta Clientes"
+  },
+  "clientList": {
+    "title": "Consulta de clientes",
+    "search": "Buscar",
+    "back": "Regresar",
+    "clientName": "Nombre",
+    "actions": "Acciones",
+    "fullName": "Nombre Completo",
+    "clientIdentification": "Identificación"
+  },
+  "clientForm": {
+    "title": "Mantenimiento de clientes",
+    "name": "Nombre *",
+    "lastName": "Apellidos *",
+    "identification": "Identificación",
+    "email": "Correo Electrónico",
+    "cellPhone": "Teléfono Celular *",
+    "otherPhone": "Teléfono Otro *",
+    "gender": {
+      "title": "Género *",
+      "male": "Masculino",
+      "female": "Femenino"
+    },
+    "birthDate": "Fecha de Nacimiento *",
+    "afilationDate": "Fecha de afiliación *",
+    "clientIdentification": "Identificación *",
+    "interest": "Interés *",
+    "address": "Dirección *",
+    "summary": "Reseña Personal *",
+    "saveButton": "Guardar",
+    "cancelButton": "Cancelar",
+    "addedSuccesfull": "Cliente ha sido agregado exitosamente",
+    "updatedSuccesfull": "Cliente ha sido actualizado exitosamente"
+  },
+  "error": {
+    "notFound404": " Oops... Página no encontrada!"
+  },
+  "deleteModal": {
+    "title": "Eliminar cliente",
+    "description": "¿Está seguro de que desea eliminar este cliente?",
+    "deleteButton": "Eliminar",
+    "cancelButton": "Cancelar"
   }
 }
- 

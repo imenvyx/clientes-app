@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteClient } from 'services/api';
 import { useMySnackbar } from 'contexts/MySnackbarProvider';
 import { ReactQueryKeys } from 'lib/reactQuery/reactQueryKeys';
+import { useTranslation } from 'react-i18next';
 
 const style = {
   position: 'absolute',
@@ -41,6 +42,7 @@ export const DeleteModal = (props: MyModalProps) => {
   const { open, clientId, closeModal } = props;
   const mySnackbar = useMySnackbar();
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const mutation = useMutation({
     mutationFn: (clientId: string) => {
@@ -76,10 +78,10 @@ export const DeleteModal = (props: MyModalProps) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Borrar
+            {t('deleteModal.title')}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Esta seguro que desea eliminar al cliente
+            {t('deleteModal.titldescriptione')}
           </Typography>
           <Stack
             direction={'row'}
@@ -93,10 +95,11 @@ export const DeleteModal = (props: MyModalProps) => {
                 mutation.mutate(clientId); // Pass the client ID here
               }}
             >
+              {t('buttons.delete')}
               Borrar
             </Button>
             <Button variant="outlined" onClick={closeModal}>
-              Cancelar
+              {t('buttons.cancel')}
             </Button>
           </Stack>
         </Box>

@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 // src/pages/Login.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useHistory, Link, useLocation } from 'react-router-dom';
 import {
   Box,
@@ -24,6 +27,13 @@ interface IFormInputs {
   password: string;
 }
 
+/**
+ * Login component that handles user authentication.
+ * It includes a form for username and password, and manages
+ * the "remember me" functionality.
+ *
+ * @returns The rendered Login component.
+ */
 const Login = () => {
   const { login: loginIn } = useAuth();
   const history = useHistory();
@@ -73,7 +83,16 @@ const Login = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+      }}
+    >
       <Paper
         elevation={3}
         sx={{
