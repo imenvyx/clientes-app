@@ -24,6 +24,14 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
+/**
+ * AuthProvider is a context provider that manages authentication state,
+ * including user data, login, logout, and loading state.
+ *
+ * @param {object} props - The props for the AuthProvider component.
+ * @param {ReactNode} props.children - The child components to render within the provider.
+ * @returns  The rendered AuthProvider component.
+ */
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [valueInLocalStorage, setValueInLocalStorage] = useLocalStorage(
     'authData',
@@ -72,6 +80,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+/**
+ * Custom hook to access the authentication context.
+ * Throws an error if used outside of an AuthProvider.
+ *
+ * @returns The authentication context value.
+ */
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

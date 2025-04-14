@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Avatar,
-  Box,
   Divider,
   Drawer,
   List,
@@ -11,25 +10,23 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import { useState } from 'react';
 import { useAuth } from 'contexts/AuthContext';
+import { useDrawer } from 'contexts/DrawerProvider';
 
 /**
  * Menu component that renders a navigation drawer with user information and navigation links.
  *
  * @returns The rendered Menu component.
  */
-export const Menu = (): JSX.Element => {
+export const Menu = () => {
   const drawerWidth = 240;
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const { open } = useDrawer();
   const { userData } = useAuth();
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const theme = useTheme();
 
   const drawer = (
     <>
@@ -54,7 +51,7 @@ export const Menu = (): JSX.Element => {
       </Toolbar>
       <Divider />
       <List>
-        <ListItemButton href="/">
+        <ListItemButton href="/" sx={{}}>
           <ListItemIcon sx={{ color: 'primary.main' }}>
             <HomeIcon />
           </ListItemIcon>
@@ -71,32 +68,27 @@ export const Menu = (): JSX.Element => {
   );
 
   return (
-    <Box
-      component="nav"
+    <Drawer
+      variant="permanent"
+      open={open}
       sx={{
-        width: { sm: drawerWidth },
         flexShrink: { sm: 0 },
         zIndex: 100,
+        width: open ? drawerWidth : 0,
+        [`& .MuiDrawer-paper`]: {
+          bgcolor: (theme) => theme.palette.background.default,
+          flexShrink: { sm: 0 },
+          pt: 10,
+          boxSizing: 'border-box',
+          width: open ? drawerWidth : 0,
+          transition: theme.transitions.create(['width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
+        },
       }}
     >
-      <Drawer
-        variant="permanent"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        ModalProps={{ keepMounted: true }}
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            bgcolor: (theme) => theme.palette.background.default,
-            pt: 10,
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-      >
-        {drawer}
-      </Drawer>
-    </Box>
+      {drawer}
+    </Drawer>
   );
 };

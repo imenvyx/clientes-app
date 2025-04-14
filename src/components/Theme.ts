@@ -71,6 +71,17 @@ const clientsTheme = createTheme({
         },
       ],
     },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          'MuiListItemButton-root': {
+            '&:hover': {
+              backgroundColor: '##C5CAE9',
+            },
+          },
+        },
+      },
+    },
     MuiTextField: {
       styleOverrides: {
         root: {

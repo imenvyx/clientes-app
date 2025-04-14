@@ -1,6 +1,6 @@
 import React, { Suspense, useState } from 'react';
 import './App.css';
-import { CircularProgress, CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import clientsTheme from 'components/Theme';
 import { QueryClientConfig } from 'lib/reactQuery/queryClientConfig';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -13,6 +13,8 @@ import { NotificationMessage } from 'components/types';
 import { MySnackbarProvider } from 'contexts/MySnackbarProvider';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DrawerProvider } from 'contexts/DrawerProvider';
+import LoadingFallback from 'components/LoadingFallback';
 
 /**
  * The `Clientes` component is a functional React component that renders
@@ -32,7 +34,7 @@ const Clients = () => {
   return (
     <div className="App">
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Suspense fallback={<CircularProgress size={15} />}>
+        <Suspense fallback={<LoadingFallback />}>
           <CssBaseline />
           <MySnackbar
             open={appSnackbarOpen}
@@ -47,7 +49,9 @@ const Clients = () => {
                     setNotification={setAppSnackbar}
                     show={setAppSnackbarOpen}
                   >
-                    <RouterConfig></RouterConfig>
+                    <DrawerProvider>
+                      <RouterConfig></RouterConfig>
+                    </DrawerProvider>
                   </MySnackbarProvider>
                 </I18nextProvider>
               </AuthProvider>

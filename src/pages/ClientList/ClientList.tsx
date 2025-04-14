@@ -19,7 +19,6 @@ import {
   Button,
   Grid,
   TablePagination,
-  Modal,
   Skeleton,
 } from '@mui/material';
 import {
@@ -30,27 +29,21 @@ import {
   KeyboardBackspace,
 } from '@mui/icons-material';
 import { ClientCommon, ClientListPayload } from 'services/types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { ReactQueryKeys } from 'lib/reactQuery/reactQueryKeys';
-import { deleteClient, fetchClients } from 'services/api';
+import { fetchClients } from 'services/api';
 import { useMySnackbar } from 'contexts/MySnackbarProvider';
 import { AxiosResponse } from 'axios';
 import { OutletContainer } from 'components/OutletContainer';
 import { useAuth } from 'contexts/AuthContext';
 import { DeleteModal, useMyModal } from 'components/DeleteModal';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
+/**
+ * ClientList component renders a table of clients with search, pagination, and actions to edit or delete clients.
+ * It also includes navigation buttons to add a new client or return to the home page.
+ *
+ * @returns The rendered ClientList component.
+ */
 const ClientList = () => {
   const history = useHistory();
   const mySnackbar = useMySnackbar();

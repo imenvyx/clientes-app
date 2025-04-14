@@ -6,6 +6,13 @@ import { Menu } from 'components/Menu';
 
 const drawerWidth = 240;
 
+/**
+ * DashboardLayout is a layout component that provides a navigation bar,
+ * a menu, and a main content area for the application.
+ *
+ * @param {React.ReactNode} children - The content to be displayed in the main area.
+ * @returns The rendered layout component.
+ */
 const DashboardLayout: React.FC = ({ children }) => {
   return (
     <Box sx={{ display: 'flex' }}>

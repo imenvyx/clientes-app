@@ -28,12 +28,19 @@ interface MyModalProps {
   closeModal: () => void;
 }
 
+/**
+ * DeleteModal component renders a modal to confirm the deletion of a client.
+ *
+ * @param {MyModalProps} props - The properties for the DeleteModal component.
+ * @param {boolean} props.open - Indicates if the modal is open.
+ * @param {string} props.clientId - The ID of the client to be deleted.
+ * @param {() => void} props.closeModal - Function to close the modal.
+ * @returns The rendered DeleteModal component.
+ */
 export const DeleteModal = (props: MyModalProps) => {
   const { open, clientId, closeModal } = props;
   const mySnackbar = useMySnackbar();
   const queryClient = useQueryClient();
-
-  console.log(clientId);
 
   const mutation = useMutation({
     mutationFn: (clientId: string) => {
@@ -98,6 +105,12 @@ export const DeleteModal = (props: MyModalProps) => {
   );
 };
 
+/**
+ * Custom hook to manage the state and behavior of the DeleteModal component.
+ * Provides methods to open and close the modal, as well as manage the client ID.
+ *
+ * @returns  An object containing modal state and methods: open, clientId, setClientId, openModal, and closeModal.
+ */
 export function useMyModal() {
   const [open, setOpen] = React.useState(false);
   const [clientId, setClientId] = useState<string>('');

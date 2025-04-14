@@ -3,16 +3,21 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { AppBar, IconButton, Stack, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAuth } from 'contexts/AuthContext';
-import { useState } from 'react';
 
+import { useDrawer } from 'contexts/DrawerProvider';
+
+/**
+ * Navbar component that displays the application header with a menu toggle,
+ * user information, and a logout button.
+ *
+ * @returns  The rendered Navbar component.
+ */
 export const Navbar = () => {
   const { userData } = useAuth();
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const { logout } = useAuth();
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const { handleOpen } = useDrawer();
+
+  const { logout } = useAuth();
 
   const handleLogout = () => {
     // Implement logout functionality here
@@ -32,21 +37,12 @@ export const Navbar = () => {
           color="inherit"
           aria-label="open drawer"
           edge="start"
-          onClick={handleDrawerToggle}
+          onClick={handleOpen}
           sx={{ mr: 2 }}
         >
           <MenuIcon />
         </IconButton>
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
-          sx={
-            {
-              /* flexGrow: 1 */
-            }
-          }
-        >
+        <Typography variant="h6" noWrap component="div">
           Cliente Dashboard
         </Typography>
         <Stack
