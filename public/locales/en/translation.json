@@ -78,9 +78,10 @@
     "cancelButton": "Cancel",
     "addedSuccesfull": "Client has been successfully added",
     "updatedSuccesfull": "Client has been successfully updated",
-    "validations": {
+    "validation": {
       "identificacionDigitsOnly": "It can only contain numbers",
-      "onlyLetters": "It can only contain letters"
+      "onlyLetters": "It can only contain letters",
+      "phone10Digits": "The phone number must have 10 digits"
     }
   },
   "error": {
