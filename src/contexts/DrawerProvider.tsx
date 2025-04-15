@@ -1,4 +1,5 @@
 import { useLocalStorage } from 'hooks/useLocalStorage';
+
 import React, {
   ReactNode,
   useCallback,
@@ -10,6 +11,8 @@ import React, {
 type DrawerContextType = {
   open: boolean;
   handleOpen: () => void;
+  handleClose: () => void;
+  handleToogle: () => void;
 };
 
 const DrawerContext = createContext<DrawerContextType>({} as DrawerContextType);
@@ -29,14 +32,25 @@ export const DrawerProvider = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState(() => valueInLocalStorage ?? true);
 
   const handleOpen = useCallback(() => {
+    setOpen(true);
+    setValueInLocalStorage(open);
+  }, [open, setValueInLocalStorage]);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+    setValueInLocalStorage(open);
+  }, [open, setValueInLocalStorage]);
+
+  const handleToogle = useCallback(() => {
     setOpen((prev) => !prev);
-    setValueInLocalStorage(!open);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+    setValueInLocalStorage(open);
+  }, [open, setValueInLocalStorage]);
 
   const value = {
     open,
     handleOpen,
+    handleClose,
+    handleToogle,
   };
 
   return (

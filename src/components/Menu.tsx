@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Avatar,
   Divider,
@@ -10,6 +10,7 @@ import {
   Stack,
   Toolbar,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
@@ -26,10 +27,19 @@ import { Link } from 'react-router-dom';
  */
 export const Menu = () => {
   const drawerWidth = 240;
-  const { open } = useDrawer();
+  const { open, handleClose } = useDrawer();
   const { userData } = useAuth();
   const theme = useTheme();
   const { t } = useTranslation();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    if (isMobile) {
+      handleClose();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const drawer = (
     <>

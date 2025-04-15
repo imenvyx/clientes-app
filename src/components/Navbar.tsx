@@ -25,7 +25,7 @@ export const Navbar = () => {
   const { userData } = useAuth();
   const { i18n } = useTranslation();
   const theme = useTheme();
-  const { handleOpen } = useDrawer();
+  const { handleToogle } = useDrawer();
 
   const { logout } = useAuth();
 
@@ -51,7 +51,7 @@ export const Navbar = () => {
           color="inherit"
           aria-label="open drawer"
           edge="start"
-          onClick={handleOpen}
+          onClick={handleToogle}
           sx={{ mr: 2 }}
         >
           <MenuIcon />

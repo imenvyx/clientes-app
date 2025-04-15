@@ -170,6 +170,17 @@ const executiveTheme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          '& .MuiSelect-select': {
+            display: 'flex !important',
+            alignItems: 'flex-start !important',
+            justifyContent: 'flex-start !important',
+          },
+        },
+      },
+    },
     MuiTooltip: {
       styleOverrides: {
         tooltip: {

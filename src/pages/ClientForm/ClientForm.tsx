@@ -15,6 +15,8 @@ import {
   Avatar,
   Paper,
   IconButton,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
 import { OutletContainer } from 'components/OutletContainer';
@@ -54,7 +56,7 @@ const ClientForm = () => {
   const mySnackbar = useMySnackbar();
   const { userData } = useAuth();
   const queryClient = useQueryClient();
-
+  const theme = useTheme();
   const interests = useQuery<AxiosResponse<Interest[]>, Error>(
     [ReactQueryKeys.InterestList],
     () => {
@@ -205,11 +207,14 @@ const ClientForm = () => {
           e.preventDefault();
           void handleSubmit(onSubmit)();
         }}
-        sx={{ mt: 3 }}
+        sx={{ mt: 3, minWidth: 500 }}
       >
-        <Box
+        <Stack
+          direction={
+            useMediaQuery(theme.breakpoints.down('sm')) ? 'column' : 'row'
+          }
+          spacing={useMediaQuery(theme.breakpoints.down('sm')) ? 2 : 0}
           sx={{
-            display: 'flex',
             justifyContent: 'space-between',
             height: '100%',
             alignItems: 'center',
@@ -282,7 +287,7 @@ const ClientForm = () => {
               {t('buttons.back')}
             </Button>
           </Stack>
-        </Box>
+        </Stack>
         <Divider />
         <Grid container spacing={2} sx={{ p: 3 }}>
           <Grid item xs={12} sm={4}>
