@@ -77,7 +77,11 @@
     "saveButton": "Guardar",
     "cancelButton": "Cancelar",
     "addedSuccesfull": "Cliente ha sido agregado exitosamente",
-    "updatedSuccesfull": "Cliente ha sido actualizado exitosamente"
+    "updatedSuccesfull": "Cliente ha sido actualizado exitosamente",
+    "validations": {
+      "identificacionDigitsOnly": "Solo puede contener números",
+      "onlyLetters": "Solo puede contener letras"
+    }
   },
   "error": {
     "notFound404": " Oops... Página no encontrada!",

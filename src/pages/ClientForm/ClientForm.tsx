@@ -284,7 +284,13 @@ const ClientForm = () => {
             <Controller
               name="identificacion"
               control={control}
-              rules={{ required: `${t('common.validation.required')}` }}
+              rules={{
+                required: `${t('common.validation.required')}`,
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: t('clientForm.validation.identificacionDigitsOnly'),
+                },
+              }}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -301,7 +307,14 @@ const ClientForm = () => {
             <Controller
               name="nombre"
               control={control}
-              rules={{ required: `${t('common.validation.required')}` }}
+              rules={{
+                required: `${t('common.validation.required')}`,
+
+                pattern: {
+                  value: /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/,
+                  message: t('clientForm.validation.onlyLetters'),
+                },
+              }}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -318,7 +331,13 @@ const ClientForm = () => {
             <Controller
               name="apellidos"
               control={control}
-              rules={{ required: `${t('common.validation.required')}` }}
+              rules={{
+                required: `${t('common.validation.required')}`,
+                pattern: {
+                  value: /^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/,
+                  message: t('clientForm.validation.onlyLetters'),
+                },
+              }}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -370,6 +389,9 @@ const ClientForm = () => {
                 <DatePicker
                   sx={{ width: '100%' }}
                   label={t('clientForm.birthDate')}
+                  disableFuture
+                  minDate={dayjs('1900-01-01')}
+                  views={['year', 'month', 'day']}
                   value={field.value ? dayjs(field.value) : null}
                   onChange={(date) => field.onChange(date?.toISOString())}
                 />
@@ -386,6 +408,9 @@ const ClientForm = () => {
                 <DatePicker
                   sx={{ width: '100%' }}
                   label={t('clientForm.afilationDate')}
+                  disableFuture
+                  minDate={dayjs('1900-01-01')}
+                  views={['year', 'month', 'day']}
                   value={field.value ? dayjs(field.value) : null}
                   onChange={(date) => field.onChange(date?.toISOString())}
                 />
@@ -398,7 +423,13 @@ const ClientForm = () => {
             <Controller
               name="celular"
               control={control}
-              rules={{ required: `${t('common.validation.required')}` }}
+              rules={{
+                required: `${t('common.validation.required')}`,
+                pattern: {
+                  value: /^[0-9]{10}$/,
+                  message: t('clientForm.validation.phone10Digits'),
+                },
+              }}
               render={({ field }) => (
                 <TextField
                   {...field}
@@ -414,7 +445,13 @@ const ClientForm = () => {
           <Grid item xs={12} sm={4}>
             <Controller
               name="otroTelefono"
-              rules={{ required: `${t('common.validation.required')}` }}
+              rules={{
+                required: `${t('common.validation.required')}`,
+                pattern: {
+                  value: /^[0-9]{10}$/,
+                  message: t('clientForm.validation.phone10Digits'),
+                },
+              }}
               control={control}
               render={({ field }) => (
                 <TextField

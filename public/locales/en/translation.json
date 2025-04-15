@@ -77,7 +77,11 @@
     "saveButton": "Save",
     "cancelButton": "Cancel",
     "addedSuccesfull": "Client has been successfully added",
-    "updatedSuccesfull": "Client has been successfully updated"
+    "updatedSuccesfull": "Client has been successfully updated",
+    "validations": {
+      "identificacionDigitsOnly": "It can only contain numbers",
+      "onlyLetters": "It can only contain letters"
+    }
   },
   "error": {
     "notFound404": "Oops... Page not found!",
