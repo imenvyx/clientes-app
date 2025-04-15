@@ -169,7 +169,12 @@ const ClientForm = () => {
           : t('clientForm.addedSuccesfull'),
         type: 'success',
       });
-      await queryClient.invalidateQueries([ReactQueryKeys.ClientList]);
+      await queryClient.invalidateQueries({
+        predicate: (query) =>
+          query.queryKey[0] === ReactQueryKeys.ClientList ||
+          (query.queryKey[0] === ReactQueryKeys.Client &&
+            query.queryKey[1] === id),
+      });
       history.push('/clientes');
     },
     onError: (error: unknown) => {
